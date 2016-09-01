@@ -239,30 +239,20 @@ function create_config( )
     },
     sudo_users = {115740444,0,tonumber(our_id)},--Sudo users
     moderation = {data = 'data/moderation.json'},
-    about_text = [[Teleseed v4
-An advanced administration bot based on TG-CLI written in Lua
+    about_text = [[PowerShield V 4.5
+👊🏻پاورشیلد ربات 🛡
 
-https://github.com/SEEDTEAM/TeleSeed
+<code>Source ==>> Not Found </code>
 
-Admins
-@iwals [Founder]
-@imandaneshi [Developer]
-@POTUS [Developer]
-@seyedan25 [Manager]
-@aRandomStranger [Admin]
+<code>Sudos</code>
+@powershield_SUDO 
 
-Special thanks to
-awkward_potato
-Siyanew
-topkecleon
-Vamptacus
+<code>Special thanks to<code>
+behrad
 
-Our channels
-@teleseedch [English]
-@iranseed [persian]
+<code>Our channel</code>
+@powershield_team
 
-Our website 
-http://teleseed.seedteam.org/
 ]],
     help_text_realm = [[
 Realm Commands:
