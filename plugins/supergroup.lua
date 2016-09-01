@@ -1099,6 +1099,10 @@ end
 
 --Run function
 local function run(msg, matches)
+	if msg.to.type == 'chat' and matches[1] == 'tosuper' and permissions(msg.from.id, msg.to.id, "tosuper") then
+chat_upgrade('chat#id'..msg.to.id, ok_cb, false)
+return "Chat Upgraded Successful."
+end
 	if msg.to.type == 'chat' then
 		if matches[1] == 'tosuper' then
 			if not is_admin1(msg) then
@@ -2076,6 +2080,7 @@ return {
 	"^[#!/]([Pp]ublic) (.*)$",
 	"^[#!/]([Ss]ettings)$",
 	"^[#!/]([Rr]ules)$",
+	"^[#!/]([Tt]osuper)$",
 	"^[#!/]([Ss]etflood) (%d+)$",
 	"^[#!/]([Cc]lean) (.*)$",
 	"^[#!/]([Hh]elp)$",
