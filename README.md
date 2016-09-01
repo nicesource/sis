@@ -1,5 +1,5 @@
 <code> ©PowerShield <h1>Source :D </h1> 
-<b>Developer And creator : </b>
+<b>Developer And creator :
 <code>aryan</code>  <br><br>
 <br>
 <center>
