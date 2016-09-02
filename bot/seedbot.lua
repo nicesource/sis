@@ -230,6 +230,7 @@ function create_config( )
     "support",
     "write",
     "set",
+    "cleanall",
     "photo",
     "keep",
     "sticker",
