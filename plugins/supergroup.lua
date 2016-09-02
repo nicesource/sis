@@ -112,7 +112,7 @@ local function callback_clean_bots (extra, success, result)
 	end
 end
 
---Get and output info about supergroup
+--[[ Get and output info about supergroup
 local function callback_info(cb_extra, success, result)
 local title ="Info for SuperGroup: ["..result.title.."]\n\n"
 local admin_num = "Admin count: "..result.admins_count.."\n"
@@ -127,7 +127,7 @@ end
 local text = title..admin_num..user_num..kicked_num..channel_id..channel_username
     send_large_msg(cb_extra.receiver, text)
 end
-
+]]
 --Get and output members of supergroup
 local function callback_who(cb_extra, success, result)
 local text = "Members for "..cb_extra.receiver
