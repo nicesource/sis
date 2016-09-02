@@ -119,7 +119,7 @@ local function kick_ban_res(extra, success, result)
 end
 
 local function run(msg, matches)
- if matches[1]:lower() == 'id' then
+--[[                    if matches[1]:lower() == 'id' then
     if msg.to.type == "user" then
       return "Bot ID: "..msg.to.id.. "\n\nYour ID: "..msg.from.id
     end
@@ -132,7 +132,7 @@ local function run(msg, matches)
       savelog(msg.to.id, name.." ["..msg.from.id.."] used /id ")
       return "Group ID for " ..string.gsub(msg.to.print_name, "_", " ").. ":\n\n"..msg.to.id
     end
-  end
+  end]]
   if matches[1]:lower() == 'kickme' then-- /kickme
   local receiver = get_receiver(msg)
     if msg.to.type == 'chat' then
@@ -335,8 +335,8 @@ return {
     "^([Bb]an)$",
     "^[!/#]([Uu]nban)$",
     "^([Uu]nban)$",
-    "^[!/#]([Ii]d)$",
-    "^([Ii]d)$",
+ --   "^[!/#]([Ii]d)$",
+  --  "^([Ii]d)$",
     "^!!tgservice (.+)$"
   },
   run = run,
