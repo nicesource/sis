@@ -223,6 +223,8 @@ function create_config( )
     "owners",
     "arabic_lock",
     "blist_gblist",
+    "info",
+    "setsticker",
     "github",
     "plugins",
     "share",
