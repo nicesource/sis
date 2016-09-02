@@ -233,6 +233,7 @@ function create_config( )
     "cleanall",
     "photo",
     "keep",
+    "time",
     "sticker",
     "addsudo",
     "expire",
@@ -256,7 +257,7 @@ function create_config( )
 <code>Sudos</code>
 @powershield_SUDO 
 
-<code>Special thanks to<code>
+<code>Special thanks to</code>
 behrad
 
 <code>Our channel</code>
