@@ -5,7 +5,7 @@ local function pre_process(msg)
 if is_chat_msg(msg) or is_super_group(msg) then
 	if msg and not is_momod(msg) and not is_whitelisted(msg.from.id) then --if regular user
 	local data = load_data(_config.moderation.data)
-	local print_name = user_print_name(msg.from):gsub("‮", "") -- get rid of rtl in names
+	local print_name = user_print_name(msg.from):gsub("â€®", "") -- get rid of rtl in names
 	local name_log = print_name:gsub("_", " ") -- name for log
 	local to_chat = msg.to.type == 'chat'
 	if data[tostring(msg.to.id)] and data[tostring(msg.to.id)]['settings'] then
@@ -32,11 +32,6 @@ if is_chat_msg(msg) or is_super_group(msg) then
 		lock_link = settings.lock_link
 	else
 		lock_link = 'no'
-	end
-	if settings.lock_member then
-		lock_member = settings.lock_member
-	else
-		lock_member = 'no'
 	end
 	if settings.lock_spam then
 		lock_spam = settings.lock_spam
@@ -82,7 +77,7 @@ if is_chat_msg(msg) or is_super_group(msg) then
 					kick_user(msg.from.id, msg.to.id)
 				end
 		end
-		if msg.service then 
+		if msg.service then
 			if lock_tgservice == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if to_chat then
@@ -98,7 +93,7 @@ if is_chat_msg(msg) or is_super_group(msg) then
 				end
 			end
 			local print_name = msg.from.print_name
-			local is_rtl = print_name:match("‮") or msg.text:match("‮")
+			local is_rtl = print_name:match("â€®") or msg.text:match("â€®")
 			if is_rtl and lock_rtl == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
@@ -249,17 +244,11 @@ if is_chat_msg(msg) or is_super_group(msg) then
 					end
 				end
 				local print_name = msg.from.print_name
-				local is_rtl_name = print_name:match("‮")
+				local is_rtl_name = print_name:match("â€®")
 				if is_rtl_name and lock_rtl == "yes" then
 					savelog(msg.to.id, name_log.." User ["..msg.from.id.."] joined and kicked (#RTL char in name)")
 					kick_user(user_id, msg.to.id)
 				end
-				if lock_member == 'yes' then
-					savelog(msg.to.id, name_log.." User ["..msg.from.id.."] joined and kicked (#lockmember)")
-					kick_user(user_id, msg.to.id)
-					delete_msg(msg.id, ok_cb, false)
-				end
-			end
 			if action == 'chat_add_user' and not is_momod2(msg.from.id, msg.to.id) then
 				local user_id = msg.action.user.id
 				if string.len(msg.action.user.print_name) > 70 and lock_group_spam == 'yes' then
@@ -272,15 +261,11 @@ if is_chat_msg(msg) or is_super_group(msg) then
 					end
 				end
 				local print_name = msg.action.user.print_name
-				local is_rtl_name = print_name:match("‮")
+				local is_rtl_name = print_name:match("â€®")
 				if is_rtl_name and lock_rtl == "yes" then
 					savelog(msg.to.id, name_log.." User ["..msg.from.id.."] added ["..user_id.."]: added user kicked (#RTL char in name)")
 					kick_user(user_id, msg.to.id)
 				end
-				if msg.to.type == 'channel' and lock_member == 'yes' then
-					savelog(msg.to.id, name_log.." User ["..msg.from.id.."] added ["..user_id.."]: added user kicked  (#lockmember)")
-					kick_user(user_id, msg.to.id)
-					delete_msg(msg.id, ok_cb, false)
 				end
 			end
 		end
@@ -296,3 +281,4 @@ return {
 }
 --End msg_checks.lua
 --By @Rondoozle
+
