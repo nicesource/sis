@@ -231,6 +231,7 @@ function create_config( )
     "write",
     "set",
     "photo",
+    "keep",
     "sticker",
     "addsudo",
     "expire",
