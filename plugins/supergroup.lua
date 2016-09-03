@@ -112,7 +112,7 @@ local function callback_clean_bots (extra, success, result)
 	end
 end
 
---[[ Get and output info about supergroup
+--Get and output info about supergroup
 local function callback_info(cb_extra, success, result)
 local title ="Info for SuperGroup: ["..result.title.."]\n\n"
 local admin_num = "Admin count: "..result.admins_count.."\n"
@@ -127,7 +127,7 @@ end
 local text = title..admin_num..user_num..kicked_num..channel_id..channel_username
     send_large_msg(cb_extra.receiver, text)
 end
-]]
+
 --Get and output members of supergroup
 local function callback_who(cb_extra, success, result)
 local text = "Members for "..cb_extra.receiver
@@ -381,33 +381,7 @@ local function unlock_group_tgservice(msg, data, target)
     return 'Tgservice has been unlocked'
   end
 end
-local function lock_group_bots(msg, data, target)
-  if not is_momod(msg) then
-    return
-  end
-  local group_bots_lock = data[tostring(target)]['settings']['lock_bots']
-  if group_bots_lock == 'yes' then
-    return 'Bots is already locked'
-  else
-    data[tostring(target)]['settings']['lock_bots'] = 'yes'
-    save_data(_config.moderation.data, data)
-    return 'Bots posting has been locked'
-  end
-end
 
-local function unlock_group_bots(msg, data, target)
-  if not is_momod(msg) then
-    return
-  end
-  local group_bots_lock = data[tostring(target)]['settings']['lock_bots']
-  if group_bots_lock == 'no' then
-    return 'Bots posting is already unlocked'
-  else
-    data[tostring(target)]['settings']['lock_bots'] = 'no'
-    save_data(_config.moderation.data, data)
-    return 'Bots posting has been unlocked'
-  end
-end
 local function lock_group_sticker(msg, data, target)
   if not is_momod(msg) then
     return
@@ -586,17 +560,12 @@ end
 		end
 	end
 	if data[tostring(target)]['settings'] then
-		if not data[tostring(target)]['settings']['lock_bots'] then
-			data[tostring(target)]['settings']['lock_bots'] = 'no'
-		end
-	end
-	if data[tostring(target)]['settings'] then
 		if not data[tostring(target)]['settings']['lock_member'] then
 			data[tostring(target)]['settings']['lock_member'] = 'no'
 		end
 	end
   local settings = data[tostring(target)]['settings']
-  local text = "SuperGroup settings:\nLock links : "..settings.lock_link.."\nLock flood: "..settings.flood.."\nFlood sensitivity : "..NUM_MSG_MAX.."\nLock Bots: "..settings.lock_bots.."\nLock spam: "..settings.lock_spam.."\nLock Arabic: "..settings.lock_arabic.."\nLock Member: "..settings.lock_member.."\nLock RTL: "..settings.lock_rtl.."\nLock Tgservice : "..settings.lock_tgservice.."\nLock sticker: "..settings.lock_sticker.."\nPublic: "..settings.public.."\nStrict settings: "..settings.strict
+  local text = "SuperGroup settings:\nLock links : "..settings.lock_link.."\nLock flood: "..settings.flood.."\nFlood sensitivity : "..NUM_MSG_MAX.."\nLock spam: "..settings.lock_spam.."\nLock Arabic: "..settings.lock_arabic.."\nLock Member: "..settings.lock_member.."\nLock RTL: "..settings.lock_rtl.."\nLock Tgservice : "..settings.lock_tgservice.."\nLock sticker: "..settings.lock_sticker.."\nPublic: "..settings.public.."\nStrict settings: "..settings.strict
   return text
 end
 
@@ -1130,10 +1099,6 @@ end
 
 --Run function
 local function run(msg, matches)
-	if msg.to.type == 'chat' and matches[1] == 'tosuper' and permissions(msg.from.id, msg.to.id, "tosuper") then
-chat_upgrade('chat#id'..msg.to.id, ok_cb, false)
-return "Chat Upgraded Successful."
-end
 	if msg.to.type == 'chat' then
 		if matches[1] == 'tosuper' then
 			if not is_admin1(msg) then
@@ -1693,10 +1658,6 @@ end
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked spam ")
 				return lock_group_spam(msg, data, target)
 			end
-			if matches[2] == 'bots' then
-				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked bots ")
-				return lock_group_bots(msg, data, target)
-			end
 			if matches[2] == 'flood' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked flood ")
 				return lock_group_flood(msg, data, target)
@@ -1744,10 +1705,6 @@ end
 			if matches[2] == 'flood' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked flood")
 				return unlock_group_flood(msg, data, target)
-			end
-			if matches[2] == 'bots' then
-				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked bots")
-				return unlock_group_bots(msg, data, target)
 			end
 			if matches[2] == 'arabic' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked Arabic")
@@ -2006,12 +1963,13 @@ end
 			return get_rules(msg, data)
 		end
 
-		if matches[1] == 'help' and not is_momod(msg) then
-			text = "لیست دستورات برای اعضای معمولی:\n\n➖➖➖➖➖➖\n#topstats\nنشان دادن ۳ نفر از فعال ترین اعضای گروه!\n➖➖➖➖➖➖\n#filterlist\nنشان دادن کلمه های فیلتر شده.\n➖➖➖➖➖➖\n#id\nنمایش اطلاعات اکانت شما .\n➖➖➖➖➖➖\n#sticker [reply]\nبا ریپلای کردن عکس میتوانید آن را به استیکر تبدیل کنید!\n#sticker [text]\nتبدیل متن شما به استیکر ...\n#sticker [text] [color]\nتبدیل متن شما به استیکر با تنظیم رنگ ...\n#sticker [text] [color] [font]\n\nتبدیل متن شما به استیکر با تنظیم رنگ و فونت...\n( Supported fonts : [fun|italic|bold|arial] )\n( Supported colors : [black|red|blue|yellow|pink|orange|brown] )\nتبدیل متن شما به استیکر ...\n➖➖➖➖➖➖\n#photo [reply]\nبا ریپلای کردن استیکر میتوانید آن را به عکس تبدیل کنید!\n➖➖➖➖➖➖\n#vc [kalame](زبان ها : Farsi,En)\nتبدیل کلمه به صدا\n➖➖➖➖➖➖\n#weather [اسم شهر]\nدریافت اطلاعات آب و هوای یک منطقه\n➖➖➖➖➖➖\n#aparat [کلمه] \nجستوجو در آپارات!\n➖➖➖➖➖➖\n#me\nنمایش تعداد پیام های ارسال شده از شما\n➖➖➖➖➖➖\n#qr [کلمه]\nتبدیل کلمه،لینک،... شما به بارکد\n➖➖➖➖➖➖\n#insta [id, Post Link]\nدریافت اطلاعات ایدی و ... از اینستاگرام!\n➖➖➖➖➖➖\n#calc [2*2]\nمحاسبه جمع تفریق ضرب و...\n➖➖➖➖➖➖\n#porn [text]\nجستجو در 7 سایت +18\n➖➖➖➖➖➖\n#time\nدریافت زمان دقیق!\n➖➖➖➖➖➖\n#support \nدریافت لینک گروه پشتیبانی!\n➖➖➖➖➖➖\n#version\nنمایش ورژن و ادمین های ربات!\n➖➖➖➖➖➖\n#plist\nدریافت لیست قیمت برای خرید گروه...\n➖➖➖➖➖➖\n#write [text]\nطراحی کلمه مورد تظر با 17 فونت!\n➖➖➖➖➖➖\n#feedback [text]\nشما میتوانید با این دستور نظرات و پیشنهادات خود را برای ما ارسال کنید...\n➖➖➖➖➖➖\n| Channel : @Black_CH |\n"
+		if matches[1] == 'help' and not is_owner(msg) then
+			text = "Message /superhelp to @Teleseed in private for SuperGroup help"
 			reply_msg(msg.id, text, ok_cb, false)
-		elseif matches[1] == 'help' and is_momod(msg) then
-			text = "راهنمای بات ضد اسپم بلک\nدرصورت ابهام میتونید با دستور /support لینک گروه پشتیبانی را دریافت کنید و  مشکلتون رو مطرح کنید! \n\n➖➖➖➖➖➖\n#ban @username\nاخراج کردن یک فرد از گروه به صورت دائمی\n#unban @username\nخارج کردن یک فرد از حالت اخراج دائمی!\n#banlist\nلیست افراد بن شده.\n➖➖➖➖➖➖\n#info\nنمایش اطلاعات اصلی گروه\n➖➖➖➖➖➖\n#del [reply|number]\nپاک کردن تعداد پیام های مورد نظر با ریپلی و تعداد!\n➖➖➖➖➖➖\n#topstats\nنشان دادن ۳ نفر از فعال ترین اعضای گروه!\n➖➖➖➖➖➖\n#admins\nنمایش لیست ادمین های گروه\n➖➖➖➖➖➖\n#filter [word]\nفیلتر کردن یک کلمه\n#remword [word]\nحذف کردن کلمه از لیست فیلتر کلمات\n#filterlist\nنشان دادن کلمه های فیلتر شده.\n➖➖➖➖➖➖\n#owner\nنمایش آیدی خریدار گروه.\n➖➖➖➖➖➖\n#modlist\nنمایش لیست ناظم ها.\n➖➖➖➖➖➖\n#bots\nلیست روبات های گروه.\n➖➖➖➖➖➖\n#who\nلیست اعضای گروه در یک فایل متنی.\n(.txt)\n➖➖➖➖➖➖\n#kick [reply|id]\nبلاک کردن و کیک کردن فرد از گروه.\n➖➖➖➖➖➖\n#setwlc [your text]\nتنظیم یک متن به عنوان متن خوشامد گویی\n➖➖➖➖➖➖\n#setwlc rules [your text]\nتنظیم کردن یک متن به عنوان پلام خوشامد گویی + قوانین گروه.\n➖➖➖➖➖➖\n#delwlc\nحذف پیام خوشامد گویی.\n➖➖➖➖➖➖\n#id\nنمایش اطلاعات اکانت شما .\n➖➖➖➖➖➖\n#sticker [reply]\nبا ریپلای کردن عکس میتوانید آن را به استیکر تبدیل کنید!\n#sticker [text]\nتبدیل متن شما به استیکر ...\n#sticker [text] [color]\nتبدیل متن شما به استیکر با تنظیم رنگ ...\n#sticker [text] [color] [font]\n\nتبدیل متن شما به استیکر با تنظیم رنگ و فونت...\n( Supported fonts : [fun|italic|bold|arial] )\n( Supported colors : [black|red|blue|yellow|pink|orange|brown] )\nتبدیل متن شما به استیکر ...\n➖➖➖➖➖➖\n#photo [reply]\nبا ریپلای کردن استیکر میتوانید آن را به عکس تبدیل کنید!\n➖➖➖➖➖➖\n#vc [kalame](زبان ها : Farsi,En)\nتبدیل کلمه به صدا\n➖➖➖➖➖➖\n#weather [اسم شهر]\nدریافت اطلاعات آب و هوای یک منطقه\n➖➖➖➖➖➖\n#aparat [کلمه] \nجستوجو در آپارات!\n➖➖➖➖➖➖\n#me\nنمایش تعداد پیام های ارسال شده از شما\n➖➖➖➖➖➖\n#qr [کلمه]\nتبدیل کلمه،لینک،... شما به بارکد\n➖➖➖➖➖➖\n#insta [id, Post Link]\nدریافت اطلاعات ایدی و ... از اینستاگرام!\n➖➖➖➖➖➖\n#write [text]\nطراحی کلمه مورد تظر با 17 فونت!\n➖➖➖➖➖➖\n#calc [2*2]\nمحاسبه جمع تفریق ضرب و...\n➖➖➖➖➖➖\n#porn [text]\nجستجو در 7 سایت +\n➖➖➖➖➖➖\n#time\nدریافت زمان دقیق!\n➖➖➖➖➖➖\n#support \nدریافت لینک گروه پشتیبانی!\n➖➖➖➖➖➖\n#setowner [reply, username]\nست کردن کاربر به عنوان خریدار گروه\n#promote [username|id]\nارتقاء مقام کاربر به ناظم گروه\n#demote [username|id]\nخلع مقام کردن کاربر از سمت ناظم ها\n➖➖➖➖➖➖\n#setname [text]\nتغییر اسم گروه\n#setphoto\nجایگزین کردن عکس گروه\n#setrules [text]\nگذاشتن قوانین برای گروه\n#setabout [text]\nگذاشتن متن توضیحات برای سوپر گروه(این متن در بخش توضیحات گروه هم نمایش داده میشه)\n➖➖➖➖➖➖\n#newlink\nساختن لینک جدید\n#link\nگرفتن لینک\n#linkpv\nارسال لینک گروه در پیوی شما!\n➖➖➖➖➖➖\n#rules\nنمایش قوانین\n➖➖➖➖➖➖\n#lock [links|flood|spam|Arabic|member|rtl|sticker|TgService|contacts|forward|badword|emoji|english|tag|webpage|strict]\nقفل کردن لینک گروها-اسپم-متن و اسم های بزرگ -زبان فارسی-تعداد اعضا-کاراکتر های غیر عادی-استیکر-مخاطبین-فروارد-فوش-اموجی-انگلیسی-تگ-لینک سایت\n\nدقت کنید اگر گذینه اخری strict روشن باشد کاربر از گروه کیک میشود و پیغام پاک میشه در غیر این صورت فقط پیغام پاک میشود\n➖➖➖➖➖➖\n#unlock [links|flood|spam|Arabic|member|rtl|sticker|contacts|TgService|strict|forward|badword|emoji|english]\nباز کردن قفل امکانات بالا\n➖➖➖➖➖➖\n#mute [all|audio|gifs|photo|video|text]\nپاک کردن سریع همه پیغام ها-عکس ها-گیف ها-صدا های ضبط شده-فیلم-متن\n➖➖➖➖➖➖\n#unmute [all|audio|gifs|photo|video|text]\nباز کردن قفل امکانات بالا\n➖➖➖➖➖➖\n#setflood [value]\nگذاشتن value به عنوان حساسیت اسپم\n➖➖➖➖➖➖\n#settings\nنمایش تنظیمات گروه\n➖➖➖➖➖➖\n#muteslist\nنمایش نوع پیغام های سایلنت شده\n*A \"muted\" message type is auto-deleted if posted\n➖➖➖➖➖➖\n#muteuser [username]\nسایلنت کردن یک کاربر خاص در گروه\nفقط خریدار (owner) میتونه کسیو سایلنت کنه ولی ناظم ها (Mods) میتونند فرد را از سایلنتی در بیاورند\n➖➖➖➖➖➖\n#mutelist\nنمایش لیست افراد سایلنت شده\n➖➖➖➖➖➖\n#clean [rules|about|modlist|mutelist|bots]\nپاک کردن لیست ناظم ها-درباره-لیست سایلنت شده ها-قوانین-بات ها\n➖➖➖➖➖➖\n#log\nبرگرداندن تاریخچه گروه در یک فایل متنی\n➖➖➖➖➖➖\n#version\nنمایش ورژن و ادمین های ربات!\n➖➖➖➖➖➖\n#plist\nدریافت لیست قیمت برای خرید گروه...\n➖➖➖➖➖➖\n#feedback [text]\nشما میتوانید با این دستور نظرات و پیشنهادات خود را برای ما ارسال کنید...\n➖➖➖➖➖➖\n| Channel : @Black_CH |\n"
-			reply_msg(msg.id, text, ok_cb, false)
+		elseif matches[1] == 'help' and is_owner(msg) then
+			local name_log = user_print_name(msg.from)
+			savelog(msg.to.id, name_log.." ["..msg.from.id.."] Used /superhelp")
+			return super_help()
 		end
 
 		if matches[1] == 'peer_id' and is_admin1(msg)then
@@ -2119,7 +2077,6 @@ return {
 	"^[#!/]([Pp]ublic) (.*)$",
 	"^[#!/]([Ss]ettings)$",
 	"^[#!/]([Rr]ules)$",
-	"^[#!/]([Tt]osuper)$",
 	"^[#!/]([Ss]etflood) (%d+)$",
 	"^[#!/]([Cc]lean) (.*)$",
 	"^[#!/]([Hh]elp)$",
