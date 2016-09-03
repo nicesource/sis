@@ -56,7 +56,8 @@ if msg.reply_id then
     end
 	end
 	local files = './files/mysticker/'..msg.from.id..'.webp'
-	if matches[1]:lower() == 'mysticker' then
+	
+	if matches[1]:lower() == 'mysticker' and not msg.reply_id then
 	if not files then
 	send_large_msg(receiver, 'دوباره امتحان کنید', ok_cb, false)
 	else
