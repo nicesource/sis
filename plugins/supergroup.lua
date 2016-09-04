@@ -597,6 +597,11 @@ end
 	end
   local settings = data[tostring(target)]['settings']
   local text = "SuperGroup settings:\nLock links : "..settings.lock_link.."\nLock flood: "..settings.flood.."\nLock FWD: "..settings.lock_fwd.."\nFlood sensitivity : "..NUM_MSG_MAX.."\nLock spam: "..settings.lock_spam.."\nLock Arabic: "..settings.lock_arabic.."\nLock Member: "..settings.lock_member.."\nLock RTL: "..settings.lock_rtl.."\nLock Tgservice : "..settings.lock_tgservice.."\nLock sticker: "..settings.lock_sticker.."\nPublic: "..settings.public.."\nStrict settings: "..settings.strict
+  if string.match(text, 'yes') then text = string.gsub(text, 'yes', '🛡🔒') end
+  if string.match(text, 'no') then text = string.gsub(text, 'no', '🔓') end
+ if string.match(text, 'true') then text = string.gsub(text, 'true', '🛡🔒') end
+  if string.match(text, 'fals') then text = string.gsub(text, 'false', '🔓') end
+
   return text
 end
 
