@@ -601,6 +601,16 @@ end
   if string.match(text, 'no') then text = string.gsub(text, 'no', '🔓') end
  if string.match(text, 'true') then text = string.gsub(text, 'true', '🛡🔒') end
   if string.match(text, 'fals') then text = string.gsub(text, 'false', '🔓') end
+  if string.match(text, '0') then text = string.gsub(text, '0', '0⃣') end
+	if string.match(text, '1') then text = string.gsub(text, '1', '1⃣') end
+	if string.match(text, '2') then text = string.gsub(text, '2', '2⃣') end
+	if string.match(text, '3') then text = string.gsub(text, '3', '3⃣') end
+	if string.match(text, '4') then text = string.gsub(text, '4', '4⃣') end
+	if string.match(text, '5') then text = string.gsub(text, '5', '5⃣') end 
+	if string.match(text, '6') then text = string.gsub(text, '6', '6⃣') end
+	if string.match(text, '7') then text = string.gsub(text, '7', '7⃣') end
+	if string.match(text, '8') then text = string.gsub(text, '8', '8⃣') end
+	if string.match(text, '9') then text = string.gsub(text, '9', '9⃣') end
 
   return text
 end
