@@ -596,7 +596,7 @@ end
 		end
 	end
   local settings = data[tostring(target)]['settings']
-  local text = "SuperGroup settings:\nLock links : "..settings.lock_link.."\nLock flood: "..settings.flood.."\nLock FWD: "..settings.lock_fwd.."\nFlood sensitivity : "..NUM_MSG_MAX.."\nLock spam: "..settings.lock_spam.."\nLock Arabic: "..settings.lock_arabic.."\nLock Member: "..settings.lock_member.."\nLock RTL: "..settings.lock_rtl.."\nLock Tgservice : "..settings.lock_tgservice.."\nLock sticker: "..settings.lock_sticker.."\n〰〰〰〰〰〰〰〰\n"..mutes_list(msg.to.id).."\nPublic: "..settings.public.."\nStrict settings: "..settings.strict
+  local text = "🔐<b>SuperGroup settings:</b>\n<i>🔰Lock links : "..settings.lock_link.."\n🔰Lock flood: "..settings.flood.."\n🔰Lock FWD: "..settings.lock_fwd.."\n🔰Flood sensitivity : "..NUM_MSG_MAX.."\n🔰Lock spam: "..settings.lock_spam.."\n🔰Lock Arabic: "..settings.lock_arabic.."\n🔰Lock Member: "..settings.lock_member.."\n🔰Lock RTL: "..settings.lock_rtl.."\n🔰Lock Tgservice : "..settings.lock_tgservice.."\n🔰Lock sticker: "..settings.lock_sticker.."</i>\n〰〰〰〰〰〰〰〰\n💠<b>"..mutes_list(msg.to.id).."Public: "..settings.public.."\nStrict settings: "..settings.strict</b>
   if string.match(text, 'yes') then text = string.gsub(text, 'yes', '🛡🔒') end
   if string.match(text, 'no') then text = string.gsub(text, 'no', '🔓') end
  if string.match(text, 'true') then text = string.gsub(text, 'true', '🛡🔒') end
