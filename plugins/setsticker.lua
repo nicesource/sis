@@ -57,7 +57,7 @@ if msg.reply_id then
 	end
 	local files = './files/mysticker/'..msg.from.id..'.webp'
 	
-	if matches[1]:lower() == 'mysticker' and not msg.reply_id then
+	if matches[1]:lower() == 'info' and not msg.reply_id then
 	if not files then
 	send_large_msg(receiver, 'دوباره امتحان کنید', ok_cb, false)
 	else
@@ -69,8 +69,8 @@ return {
   patterns = {
  "^([Ss]etsticker)$",
  "^[!/]([Ss]etsticker)$",
-"^([Mm]ysticker)$",
-"^[!/]([Mm]ysticker)$",
+"^([Ii]nfo)$",
+"^[!/]([Ii]nfo)$",
  "%[(photo)%]",
   },
   run = run,
