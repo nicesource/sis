@@ -19,7 +19,14 @@ end
  
 return {
   patterns = {
-    
+    "nnt",
+    "nanat",
+    "kos",
+    "kir",
+    "کیر",
+    "کص",
+    "ننت",
+    "حرومزاده",
   },
   run = run
 }
