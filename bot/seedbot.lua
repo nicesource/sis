@@ -245,6 +245,7 @@ function create_config( )
     "broadcast",
     "invite",
     "all",
+    "lock_chalesh",
     "leave_ban",
     "wlc",
 	"supergroup",
