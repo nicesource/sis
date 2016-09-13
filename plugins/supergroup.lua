@@ -962,7 +962,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
-  local textfa = "تنظیمات سوپرگروه "..string.gsub(msg.to.print_name, "_", " ").."\nقفل لینک: "..settings.lock_link.."\nقفل فحش : "..settings.lock_fosh.."\nقفل فلود: "..settings.flood.."\nقفل فوروارد:"..settings.lock_fwd.."\nحساسیت: "..NUM_MSG_MAX.."\nقفل اسپم: "..settings.lock_spam.."\nقفل عربی: "..settings.lock_arabic.."\nقفل اعضا: "..settings.lock_member.."\nقفل ار تی ال: "..settings.lock_rtl.."\nقفل سرویس تلگرام: "..settings.lock_tgservice.."\nقفل استیکر: "..settings.lock_sticker.."\nتنظیمات عمومی: "..settings.public.."\nسخت گیرانه: "..settings.strict.."\n--------------\nمدل گروه: "..groupmodel.."\nزبان:فارسی\nورژن:"..version.."\nکانال:@PartTeam"
+  local textfa = "تنظیمات سوپرگروه "..string.gsub(msg.to.print_name, "_", " ").."\nقفل لینک: "..settings.lock_link.."\nقفل فحش : "..settings.lock_fosh.."\nقفل فلود: "..settings.flood.."\nقفل فوروارد:"..settings.lock_fwd.."\nحفل اسپم: "..settings.lock_spam.."\nقفل عربی: "..settings.lock_arabic.."\nقفل اعضا: "..settings.lock_member.."\nقفل ار تی ال: "..settings.lock_rtl.."\nقفل سرویس تلگرام: "..settings.lock_tgservice.."\nقفل استیکر: "..settings.lock_sticker.."\nتنظیمات عمومی: "..settings.public.."\nسخت گیرانه: "..settings.strict.."\n--------------\nمدل گساسیت: "..NUM_MSG_MAX.."\nقروه: "..groupmodel.."\nزبان:فارسی\nورژن:"..version.."\nکانال:@PartTeam"
   textfa = string.gsub(textfa, 'no', 'خیر')
   textfa = string.gsub(textfa, 'yes', 'بله')
   textfa = string.gsub(textfa, 'free', 'رایگان')
