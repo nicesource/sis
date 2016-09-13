@@ -978,7 +978,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local text = text.."▫️<b> Lock flood </b><code>= "..settings.flood.." </code>\n"
   local text = text.."▪️<b> Flood sensitivity </b><code>= "..NUM_MSG_MAX.." </code>\n"
   local text = text.."▪️<b> Lock Fosh </b><code>= "..settings.lock_fosh.." </code>\n"
-  local text = text.."▫️<b> Lock spam </b><code>= "..settings.lock_arabic." </code>\n"
+  local text = text.."▫️<b> Lock spam </b><code>= "..settings.lock_spam.." </code>\n"
   local text = text.."▪️<b> Lock Arabic </b><code>= "..settings.lock_arabic.." </code>\n"
   local text = text.."▫️<b> Lock RTL </b><code>= "..settings.lock_rtl.." </code>\n"
   local text = text.."▪️<b> Lock Tgservice </b><code>= "..settings.lock_tgservice.." </code>\n"
