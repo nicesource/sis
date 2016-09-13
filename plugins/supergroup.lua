@@ -283,6 +283,61 @@ local function unlock_group_spam(msg, data, target)
   end
  end
 end
+----
+local function lock_group_fwd(msg, data, target)
+  if not is_momod(msg) then
+    return
+  end
+  if not is_owner(msg) then
+    return
+  end
+  local group_fwd_lock = data[tostring(target)]['settings']['lock_fwd']
+  if group_fwd_lock == 'del' then
+  	local hash = 'group:'..msg.to.id
+    local group_lang = redis:hget(hash,'lang')
+    if group_lang then
+	return "فوروارد از قبل قفل بود "
+	else
+    return "fwd is already locked"
+	end
+  else
+    data[tostring(target)]['settings']['lock_fwd'] = 'del'
+    save_data(_config.moderation.data, data)
+	local hash = 'group:'..msg.to.id
+    local group_lang = redis:hget(hash,'lang')
+    if group_lang then
+	return "فوروارد قفل شد"
+	else
+    return "forward has been locked"
+  end
+ end
+end
+local function unlock_group_fwd(msg, data, target)
+  if not is_momod(msg) then
+    return
+  end
+  local group_fwd_lock = data[tostring(target)]['settings']['lock_fwd']
+  if group_spam_lock == 'ok' then
+  local hash = 'group:'..msg.to.id
+  local group_lang = redis:hget(hash,'lang')
+  if group_lang then
+  return "فوروارد از قبل آزاد بود"
+  else
+  return "Forward is not locked"
+  end
+  else
+    data[tostring(target)]['settings']['lock_fwd'] = 'ok'
+    save_data(_config.moderation.data, data)
+	local hash = 'group:'..msg.to.id
+    local group_lang = redis:hget(hash,'lang')
+    if group_lang then
+	return "فوروارد آزاد شد"
+	else
+    return "forward has been unlocked"
+  end
+ end
+end
+-----
 local function lock_group_flood(msg, data, target)
   if not is_momod(msg) then
     return
@@ -806,6 +861,11 @@ function show_supergroup_settingsmod(msg, target)
 			data[tostring(target)]['settings']['lock_rtl'] = 'ok'
 		end
 end
+if data[tostring(target)]['settings'] then
+		if not data[tostring(target)]['settings']['lock_fwd'] then
+			data[tostring(target)]['settings']['lock_fwd'] = 'ok'
+		end
+end
       if data[tostring(target)]['settings'] then
 		if not data[tostring(target)]['settings']['lock_tgservice'] then
 			data[tostring(target)]['settings']['lock_tgservice'] = 'ok'
@@ -849,7 +909,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
-  local textfa = "تنظیمات سوپرگروه "..string.gsub(msg.to.print_name, "_", " ").."\nقفل لینک: "..settings.lock_link.."\nقفل فلود: "..settings.flood.."\nحساسیت: "..NUM_MSG_MAX.."\nقفل اسپم: "..settings.lock_spam.."\nقفل عربی: "..settings.lock_arabic.."\nقفل اعضا: "..settings.lock_member.."\nقفل ار تی ال: "..settings.lock_rtl.."\nقفل سرویس تلگرام: "..settings.lock_tgservice.."\nقفل استیکر: "..settings.lock_sticker.."\nتنظیمات عمومی: "..settings.public.."\nسخت گیرانه: "..settings.strict.."\n--------------\nمدل گروه: "..groupmodel.."\nزبان:فارسی\nورژن:"..version.."\nکانال:@PartTeam"
+  local textfa = "تنظیمات سوپرگروه "..string.gsub(msg.to.print_name, "_", " ").."\nقفل لینک: "..settings.lock_link.."\nقفل فلود: "..settings.flood.."\nقفل فوروارد:"..settings.lock_fwd.."\nحساسیت: "..NUM_MSG_MAX.."\nقفل اسپم: "..settings.lock_spam.."\nقفل عربی: "..settings.lock_arabic.."\nقفل اعضا: "..settings.lock_member.."\nقفل ار تی ال: "..settings.lock_rtl.."\nقفل سرویس تلگرام: "..settings.lock_tgservice.."\nقفل استیکر: "..settings.lock_sticker.."\nتنظیمات عمومی: "..settings.public.."\nسخت گیرانه: "..settings.strict.."\n--------------\nمدل گروه: "..groupmodel.."\nزبان:فارسی\nورژن:"..version.."\nکانال:@PartTeam"
   textfa = string.gsub(textfa, 'no', 'خیر')
   textfa = string.gsub(textfa, 'yes', 'بله')
   textfa = string.gsub(textfa, 'free', 'رایگان')
@@ -868,6 +928,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local text = text.."▪️<b> Lock Arabic </b><code>= "..settings.lock_arabic.." </code>\n"
   local text = text.."▫️<b> Lock RTL </b><code>= "..settings.lock_rtl.." </code>\n"
   local text = text.."▪️<b> Lock Tgservice </b><code>= "..settings.lock_tgservice.." </code>\n"
+  local text = text.."▪️<b> Lock Forward(fwd) </b><code>= "..settings.lock_fwd.." </code>\n"
   local text = text.."▫️<b> Lock Member </b><code>= "..settings.lock_member.." </code>\n"
   local text = text.."▪️<b> Lock sticker </b><code>= "..settings.lock_sticker.." </code>\n"
   local text = text.."▫️<b> Public </b><code>= "..settings.public.." </code>\n"
@@ -2152,6 +2213,10 @@ end
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked spam ")
 				return lock_group_spam(msg, data, target)
 			end
+			if matches[2] == 'fwd' or matches[2] == 'فوروارد' then
+				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked fwd ")
+				return lock_group_fwd(msg, data, target)
+			end
 			if matches[2] == 'flood' or matches[2] == 'فلود' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked flood ")
 				return lock_group_flood(msg, data, target)
@@ -2199,6 +2264,10 @@ end
 			if matches[2] == 'flood' or matches[2] == 'فلود' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked flood")
 				return unlock_group_flood(msg, data, target)
+			end
+			if matches[2] == 'fwd' or matches[2] == 'فوروارد' then
+				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked fwd")
+				return unlock_group_fwd(msg, data, target)
 			end
 			if matches[2] == 'arabic' or matches[2] == 'عربی' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked Arabic")
