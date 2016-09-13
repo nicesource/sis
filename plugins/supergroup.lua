@@ -229,58 +229,7 @@ local function unlock_group_links(msg, data, target)
   end
  end
 end
-local function lock_group_fwd(msg, data, target)
-  if not is_momod(msg) then
-    return
-  end
-  local group_fwd_lock = data[tostring(target)]['settings']['lock_fwd']
-  if group_fwd_lock == 'yes' then
-  local hash = 'group:'..msg.to.id
-    local group_lang = redis:hget(hash,'lang')
-    if group_lang then
-	return "قفل فوروارد از قبل فعال بود"
-else
-    return 'fwd is already locked'
-	end
-  else
-    data[tostring(target)]['settings']['lock_fwd'] = 'yes'
-    save_data(_config.moderation.data, data)
-	local hash = 'group:'..msg.to.id
-    local group_lang = redis:hget(hash,'lang')
-    if group_lang then
-	return "قفل فوروارد فعال شد"
-	else
-    return 'fwd has been locked'
-  end
-end
-end
 
-local function unlock_group_fwd(msg, data, target)
-  if not is_momod(msg) then
-    return
-  end
-  local group_fwd_lock = data[tostring(target)]['settings']['lock_fwd']
-  if group_fwd_lock == 'no' then
-  local hash = 'group:'..msg.to.id
-    local group_lang = redis:hget(hash,'lang')
-    if group_lang then
-	return "فوروارد از قبل آزاد بود"
-	end
-	else
-    return 'fwd is not locked'
-	end
-  else
-    data[tostring(target)]['settings']['lock_fwd'] = 'yes'
-    save_data(_config.moderation.data, data)
-	local hash = 'group:'..msg.to.id
-    local group_lang = redis:hget(hash,'lang')
-    if group_lang then
-	return "فوروارد آزاد شد"
-	else
-    return 'fwd has been unlocked'
-  end
-  end
-end
 local function lock_group_spam(msg, data, target)
   if not is_momod(msg) then
     return
