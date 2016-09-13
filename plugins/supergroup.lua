@@ -335,6 +335,57 @@ local function unlock_group_fwd(msg, data, target)
  end
 end
 -----
+local function lock_group_fosh(msg, data, target)
+  if not is_momod(msg) then
+    return
+  end
+  local group_fosh_lock = data[tostring(target)]['settings']['lock_fosh']
+  if group_fosh_lock == 'del' then
+  local hash = 'group:'..msg.to.id
+  local group_lang = redis:hget(hash,'lang')
+  if group_lang then
+    return "فحش از قبل قفل بود"
+	else
+    return "Fosh is already locked"
+	end
+  else
+    data[tostring(target)]['settings']['lock_fosh'] = 'del'
+    save_data(_config.moderation.data, data)
+	local hash = 'group:'..msg.to.id
+    local group_lang = redis:hget(hash,'lang')
+    if group_lang then
+	return "فحش قفل شد"
+	else
+    return "Fosh has been locked"
+  end
+ end
+end
+local function unlock_group_fosh(msg, data, target)
+  if not is_momod(msg) then
+    return
+  end
+  local group_fosh_lock = data[tostring(target)]['settings']['lock_fosh']
+  if group_fosh_lock == 'ok' then
+  	local hash = 'group:'..msg.to.id
+    local group_lang = redis:hget(hash,'lang')
+    if group_lang then
+	return "فحش از قبل آزاد بود"
+	else
+    return "Fosh is not locked"
+	end
+  else
+    data[tostring(target)]['settings']['lock_fosh'] = 'ok'
+    save_data(_config.moderation.data, data)
+	local hash = 'group:'..msg.to.id
+    local group_lang = redis:hget(hash,'lang')
+    if group_lang then
+	return "فحش آزاد شد"
+	else
+    return "fosh has been unlocked"
+  end
+ end
+end
+----
 local function lock_group_flood(msg, data, target)
   if not is_momod(msg) then
     return
@@ -859,6 +910,11 @@ function show_supergroup_settingsmod(msg, target)
 		end
 end
 if data[tostring(target)]['settings'] then
+		if not data[tostring(target)]['settings']['lock_fosh'] then
+			data[tostring(target)]['settings']['lock_fosh'] = 'ok'
+		end
+end
+if data[tostring(target)]['settings'] then
 		if not data[tostring(target)]['settings']['lock_fwd'] then
 			data[tostring(target)]['settings']['lock_fwd'] = 'ok'
 		end
@@ -906,7 +962,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
-  local textfa = "تنظیمات سوپرگروه "..string.gsub(msg.to.print_name, "_", " ").."\nقفل لینک: "..settings.lock_link.."\nقفل فلود: "..settings.flood.."\nقفل فوروارد:"..settings.lock_fwd.."\nحساسیت: "..NUM_MSG_MAX.."\nقفل اسپم: "..settings.lock_spam.."\nقفل عربی: "..settings.lock_arabic.."\nقفل اعضا: "..settings.lock_member.."\nقفل ار تی ال: "..settings.lock_rtl.."\nقفل سرویس تلگرام: "..settings.lock_tgservice.."\nقفل استیکر: "..settings.lock_sticker.."\nتنظیمات عمومی: "..settings.public.."\nسخت گیرانه: "..settings.strict.."\n--------------\nمدل گروه: "..groupmodel.."\nزبان:فارسی\nورژن:"..version.."\nکانال:@PartTeam"
+  local textfa = "تنظیمات سوپرگروه "..string.gsub(msg.to.print_name, "_", " ").."\nقفل لینک: "..settings.lock_link.."\nقفل فحش : "..settings.lock_fosh.."\nقفل فلود: "..settings.flood.."\nقفل فوروارد:"..settings.lock_fwd.."\nحساسیت: "..NUM_MSG_MAX.."\nقفل اسپم: "..settings.lock_spam.."\nقفل عربی: "..settings.lock_arabic.."\nقفل اعضا: "..settings.lock_member.."\nقفل ار تی ال: "..settings.lock_rtl.."\nقفل سرویس تلگرام: "..settings.lock_tgservice.."\nقفل استیکر: "..settings.lock_sticker.."\nتنظیمات عمومی: "..settings.public.."\nسخت گیرانه: "..settings.strict.."\n--------------\nمدل گروه: "..groupmodel.."\nزبان:فارسی\nورژن:"..version.."\nکانال:@PartTeam"
   textfa = string.gsub(textfa, 'no', 'خیر')
   textfa = string.gsub(textfa, 'yes', 'بله')
   textfa = string.gsub(textfa, 'free', 'رایگان')
@@ -921,7 +977,8 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local text = text.."▪️<b> Lock links </b><code>= "..settings.lock_link.." </code>\n"
   local text = text.."▫️<b> Lock flood </b><code>= "..settings.flood.." </code>\n"
   local text = text.."▪️<b> Flood sensitivity </b><code>= "..NUM_MSG_MAX.." </code>\n"
-  local text = text.."▫️<b> Lock spam </b><code>= "..settings.lock_spam.." </code>\n"
+  local text = text.."▪️<b> Lock Fosh </b><code>= "..settings.lock_fosh.." </code>\n"
+  local text = text.."▫️<b> Lock spam </b><code>= "..settings.lock_arabic." </code>\n"
   local text = text.."▪️<b> Lock Arabic </b><code>= "..settings.lock_arabic.." </code>\n"
   local text = text.."▫️<b> Lock RTL </b><code>= "..settings.lock_rtl.." </code>\n"
   local text = text.."▪️<b> Lock Tgservice </b><code>= "..settings.lock_tgservice.." </code>\n"
@@ -2226,6 +2283,10 @@ end
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked member ")
 				return lock_group_membermod(msg, data, target)
 			end
+				if matches[2] == 'fosh' or matches[2] == 'فحش' then
+				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked fosh ")
+				return lock_group_fosh(msg, data, target)
+			end
 			if matches[2]:lower() == 'rtl' or matches[2] == 'ار تی ال' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked rtl chars. in names")
 				return lock_group_rtl(msg, data, target)
@@ -2253,6 +2314,10 @@ end
 			if matches[2] == 'links' or matches[2] == 'لینک' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked link posting")
 				return unlock_group_links(msg, data, target)
+			end
+			if matches[2] == 'fosh' or matches[2] == 'فحش' then
+				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked fosh")
+				return unlock_group_fosh(msg, data, target)
 			end
 			if matches[2] == 'spam' or matches[2] == 'اسپم' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked spam")
