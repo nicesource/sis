@@ -247,6 +247,7 @@ function create_config( )
     "all",
     "lock_chalesh",
     "leave_ban",
+    "lang",
     "wlc",
 	"supergroup",
 	"whitelist",
