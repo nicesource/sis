@@ -288,17 +288,14 @@ local function lock_group_fwd(msg, data, target)
   if not is_momod(msg) then
     return
   end
-  if not is_owner(msg) then
-    return
-  end
   local group_fwd_lock = data[tostring(target)]['settings']['lock_fwd']
   if group_fwd_lock == 'del' then
-  	local hash = 'group:'..msg.to.id
-    local group_lang = redis:hget(hash,'lang')
-    if group_lang then
-	return "فوروارد از قبل قفل بود "
+  local hash = 'group:'..msg.to.id
+  local group_lang = redis:hget(hash,'lang')
+  if group_lang then
+    return "فوروارد از قبل قفل بود"
 	else
-    return "fwd is already locked"
+    return "Forward is already locked"
 	end
   else
     data[tostring(target)]['settings']['lock_fwd'] = 'del'
@@ -308,7 +305,7 @@ local function lock_group_fwd(msg, data, target)
     if group_lang then
 	return "فوروارد قفل شد"
 	else
-    return "forward has been locked"
+    return "Forward has been locked"
   end
  end
 end
@@ -317,14 +314,14 @@ local function unlock_group_fwd(msg, data, target)
     return
   end
   local group_fwd_lock = data[tostring(target)]['settings']['lock_fwd']
-  if group_spam_lock == 'ok' then
-  local hash = 'group:'..msg.to.id
-  local group_lang = redis:hget(hash,'lang')
-  if group_lang then
-  return "فوروارد از قبل آزاد بود"
-  else
-  return "Forward is not locked"
-  end
+  if group_fwd_lock == 'ok' then
+  	local hash = 'group:'..msg.to.id
+    local group_lang = redis:hget(hash,'lang')
+    if group_lang then
+	return "فوروارد از قبل آزاد بود"
+	else
+    return "Forward is not locked"
+	end
   else
     data[tostring(target)]['settings']['lock_fwd'] = 'ok'
     save_data(_config.moderation.data, data)
@@ -333,7 +330,7 @@ local function unlock_group_fwd(msg, data, target)
     if group_lang then
 	return "فوروارد آزاد شد"
 	else
-    return "forward has been unlocked"
+    return "Forward has been unlocked"
   end
  end
 end
