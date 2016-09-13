@@ -268,6 +268,7 @@ local function unlock_group_fwd(msg, data, target)
 	end
 	else
     return 'fwd is not locked'
+	end
   else
     data[tostring(target)]['settings']['lock_fwd'] = 'yes'
     save_data(_config.moderation.data, data)
