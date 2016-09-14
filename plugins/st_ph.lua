@@ -6,7 +6,7 @@ do
 local function todoc(msg, success, result)
   local receiver = get_receiver(msg)
   if success then
-    local file = 'sticker/file/'..textn..'.png'
+    local file = 'files/tophoto/'..textn..'.png'
     print('File downloaded to:', result)
     os.rename(result, file)
     print('File moved to:', file)
@@ -21,7 +21,7 @@ end
 local function tophoto(msg, success, result)
   local receiver = get_receiver(msg)
   if success then
-    local file = 'sticker/photo'..textn..'.jpg'
+    local file = 'files/tophoto'..textn..'.jpg'
     print('File downloaded to:', result)
     os.rename(result, file)
     print('File moved to:', file)
@@ -36,7 +36,7 @@ end
 local function tosticker(msg, success, result)
   local receiver = get_receiver(msg)
   if success then
-    local file = 'sticker/sticker'..textn..'.webp'
+    local file = 'files/tosticker'..textn..'.webp'
     print('File downloaded to:', result)
     os.rename(result, file)
     print('File moved to:', file)
@@ -51,7 +51,7 @@ end
 local function dtosticker(msg, success, result)
   local receiver = get_receiver(msg)
   if success then
-    local file = 'data/'..msg.from.id..'.webp'
+    local file = 'files/tophoto/'..msg.from.id..'.webp'
     print('File downloaded to:', result)
     os.rename(result, file)
     print('File moved to:', file)
