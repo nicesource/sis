@@ -1603,7 +1603,7 @@ end
 	local print_name = user_print_name(msg.from):gsub("‮", "")
 	local name_log = print_name:gsub("_", " ")
 	local data = load_data(_config.moderation.data)
-		if matches[1]:lower() == 'add' or matches[1]:lower() == "فعال" and not matches[2] then
+		if matches[1]:lower() == '+' or matches[1]:lower() == "فعال" and not matches[2] then
 			if not is_admin1(msg) and not is_support(support_id) then
 				return
 			end
@@ -1622,7 +1622,7 @@ end
 			set_mutes(msg.to.id)
 			channel_set_admin(receiver, 'user#id'..msg.from.id, ok_cb, false)
 		end
-		if matches[1] == 'rem' or matches[1]:lower() == "سیک" and is_admin1(msg) and not matches[2] then
+		if matches[1] == '-' or matches[1]:lower() == "سیک" and is_admin1(msg) and not matches[2] then
 			if not is_super_group(msg) then
 			local hash = 'group:'..msg.to.id
             local group_lang = redis:hget(hash,'lang')
@@ -2841,8 +2841,6 @@ return {
 	---------------------
     "^[#!/](setversion) (.*)$",
   	"^[#!/](setgpmodel) (.*)$",
-	"^[#!/]([Aa][Dd][Dd])$",
-	"^[#!/]([Rr]em)$",
 	"^[#!/]([Mm]ove) (.*)$",
 	"^[#!/]([Aa]dmins)$",
 	"^[#!/]([Oo]wner)$",
@@ -2894,8 +2892,8 @@ return {
 	"^[!/#](linkpv)$",
     "[#!/](mp) (.*)",
 	"[#!/](md) (.*)",
-	"^([Aa]dd)$",
-	"^([Rr]em)$",
+	"^(+)$",
+	"^(-)$",
 	"^([Mm]ove) (.*)$",
 	"^([Aa]dmins)$",
 	"^([Oo]wner)$",
