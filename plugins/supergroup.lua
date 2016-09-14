@@ -973,7 +973,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   textfa = string.gsub(textfa, 'normal', 'متوسط')
   return reply_msg(msg.id, textfa, ok_cb, false)
   else
-  local text = "▫️<b>Supergroup settings for "..string.gsub(msg.to.print_name, "_", " ").."</b>\n"
+  local text = "💠️<i>Supergroup settings for :</i>\n <code>"..string.gsub(msg.to.print_name, "_", " ").."</code>\n"
   local text = text.."▪️<b> Lock links </b><code>= "..settings.lock_link.." </code>\n"
   local text = text.."▫️<b> Lock flood </b><code>= "..settings.flood.." </code>\n"
   local text = text.."▪️<b> Lock Fosh </b><code>= "..settings.lock_fosh.." </code>\n"
@@ -989,7 +989,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local text = text.."▪️<b> Flood sensitivity </b><code>= "..NUM_MSG_MAX.." </code>\n"
   local text = text.."<i>〰〰〰〰〰〰〰〰〰〰</i>\n"
   local text = text.."🔴<b>"..mutes_list(msg.to.id).." </b>\n"
-  local text = text.."<i>〰〰〰〰〰〰〰〰〰〰</i>\n"
+  local text = text.."<i>〰〰〰〰〰〰〰〰〰〰</i>"
   local text = text.."▫️<b> Max warn </b><code>= "..settings.warn_max.." </code>\n"
   local text = text.."▪️<b> Mod warn </b><code>= "..settings.warn_mod.." </code>\n"
   local text = text.."▫️<b> Group model </b><code>= "..groupmodel.." </code>\n"
@@ -997,6 +997,8 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local text = text.."▫️<b> lang </b><code>= EN </code>\n"
   local text = text.."▪️<b> version </b><code>= "..version.." </code>\n"
   local text = text..'<a href="https://telegram.me/joinchat/CeXIOz8cmaMb1N7rkyrIWw">PartTeam</a>'
+  if string.match(text, 'yes') then text = string.gsub(text, 'yes', '❌') end
+	if string.match(text, 'ok') then text = string.gsub(text, 'ok', '✅') end
   return reply_msg(msg.id, text, ok_cb, false)
  end
 end
