@@ -37,7 +37,7 @@ end
   end
 end
 local function run(msg, matches)
-  if matches[1] == 'clean all' and is_owner(msg) then
+  if matches[1]:lower() == 'clean all' or matches[1] == 'حذف همه' and is_owner(msg) then
     if msg.to.type == 'channel' then
       get_history(msg.to.peer_id, 500 + 1 , history , {chatid = msg.to.peer_id, con = 500})
     end
@@ -46,8 +46,9 @@ end
 
 return {
     patterns = {
-        '^(clean all)$',
+        '^([cC]lean all)$',
         '^[#/!](clean all)$',
+        '^(حذف همه)$',
     },
     run = run
 }
