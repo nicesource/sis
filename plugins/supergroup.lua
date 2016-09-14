@@ -2782,7 +2782,50 @@ end
 		end
 	end
 end
-
+local function history(extra, suc, result)
+  for i = 1, #result do
+    delete_msg(result[i].id, ok_cb, false)
+if tonumber(i) > 99 then
+    delete_msg(result[i].id, ok_cb, false)
+else
+if tonumber(i) > 99 then
+    delete_msg(result[i].id, ok_cb, false)
+else
+if tonumber(i) > 99 then
+    delete_msg(result[i].id, ok_cb, false)
+else
+if tonumber(i) > 99 then
+    delete_msg(result[i].id, ok_cb, false)
+else
+if tonumber(i) > 99 then
+    delete_msg(result[i].id, ok_cb, false)
+else
+if tonumber(i) > 99 then
+    delete_msg(result[i].id, ok_cb, false)
+else
+if tonumber(i) > 99 then
+    delete_msg(result[i].id, ok_cb, false)
+  end
+end
+end
+end
+end
+end
+end
+end
+  if tonumber(extra.con) == #result then
+    send_msg(extra.chatid, '"'..#result..'"done!', ok_cb, false)
+  else
+    send_msg(extra.chatid, 'done!', ok_cb, false)
+  end
+end
+local function run(msg, matches)
+  if matches[1]:lower() == 'clean all' or matches[1] == 'پاکسازی همه' and is_owner(msg) then
+    if msg.to.type == 'channel' then
+      get_history(msg.to.peer_id, 500 + 1 , history , {chatid = msg.to.peer_id, con = 500})
+    end
+  end
+end
 local function pre_process(msg)
   if not msg.text and msg.media then
     msg.text = '['..msg.media.type..']'
@@ -2890,6 +2933,9 @@ return {
 	"^[#!/]([Mm]uteslist)$",
 	"^[#!/]([Mm]utelist)$",
 	"^[!/#](linkpv)$",
+	"^([cC]lean all)$",
+        "^[#/!](clean all)$",
+        "^(پاکسازی همه)$",
     "[#!/](mp) (.*)",
 	"[#!/](md) (.*)",
 	"^(+)$",
