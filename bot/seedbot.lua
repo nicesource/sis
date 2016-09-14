@@ -232,7 +232,6 @@ function create_config( )
     "support",
     "write",
     "set",
-    "cleanall",
     "st_ph",
     "keep",
     "time",
