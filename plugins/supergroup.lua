@@ -962,7 +962,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
-  local textfa = "⚙تنظیمات سوپرگروه "..string.gsub(msg.to.print_name, "_", " ").."\n🔰قفل لینک: "..settings.lock_link.."\n🔰قفل استیکر: "..settings.lock_sticker.."\n🔰قفل فحش : "..settings.lock_fosh.."\n🔰قفل فلود: "..settings.flood.."\n🔰قفل فوروارد:"..settings.lock_fwd.."\n🔰حفل اسپم: "..settings.lock_spam.."\n🔰قفل عربی: "..settings.lock_arabic.."\n🔰قفل اعضا: "..settings.lock_member.."\n🔰قفل ار تی ال: "..settings.lock_rtl.."\n🔰قفل سرویس تلگرام: "..settings.lock_tgservice.."\n🔰قفل استیکر: "..settings.lock_sticker.."\n🔰تنظیمات عمومی: "..settings.public.."\n🔰سخت گیرانه: "..settings.strict.."\n〰〰〰〰〰〰〰〰〰〰\n🚨مدل گساسیت: "..NUM_MSG_MAX.."\nمدل گروه : "..groupmodel.."\n💭زبان: 🇮🇷فارسی🇮🇷\n📍ورژن:"..version.."\n"
+  local textfa = "⚙تنظیمات سوپرگروه "..string.gsub(msg.to.print_name, "_", " ").."\n🔰قفل لینک: "..settings.lock_link.."\n🔰قفل استیکر: "..settings.lock_sticker.."\n🔰قفل فحش : "..settings.lock_fosh.."\n🔰قفل فلود: "..settings.flood.."\n🔰قفل فوروارد:"..settings.lock_fwd.."\n🔰قفل اسپم: "..settings.lock_spam.."\n🔰قفل عربی: "..settings.lock_arabic.."\n🔰قفل اعضا: "..settings.lock_member.."\n🔰قفل ار تی ال: "..settings.lock_rtl.."\n🔰قفل سرویس تلگرام: "..settings.lock_tgservice.."\n🔰قفل استیکر: "..settings.lock_sticker.."\n🔰تنظیمات عمومی: "..settings.public.."\n🔰سخت گیرانه: "..settings.strict.."\n〰〰〰〰〰〰〰〰〰〰\n🚨مدل حساسیت: "..NUM_MSG_MAX.."\nمدل گروه : "..groupmodel.."\n💭زبان: 🇮🇷فارسی🇮🇷\n📍ورژن:"..version.."\n"
   textfa = string.gsub(textfa, 'no', 'خیر')
   textfa = string.gsub(textfa, 'yes', 'بله')
   textfa = string.gsub(textfa, 'free', 'رایگان')
@@ -996,7 +996,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local text = text.."▪️<b> Expire Time </b><code>= "..expire.." </code>\n"
   local text = text.."▫️<b> lang </b><code>= EN </code>\n"
   local text = text.."▪️<b> version </b><code>= "..version.." </code>\n"
-  local text = text..'<a href="https://telegram.me/joinchat/CeXIOz8cmaMb1N7rkyrIWw">PartTeam</a>'
+  local text = text..'<a href="https://telegram.me/joinchat/DHi5Sz4zV0qEZhWsSzXXqw">🔗 PowerShield Channel</a>'
   if string.match(text, 'yes') then text = string.gsub(text, 'yes', '❌') end
 	if string.match(text, 'ok') then text = string.gsub(text, 'ok', '✅') end
   return reply_msg(msg.id, text, ok_cb, false)
