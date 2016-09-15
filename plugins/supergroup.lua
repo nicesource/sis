@@ -18,17 +18,17 @@ local function check_member_super(cb_extra, success, result)
         set_owner = member_id ,
         settings = {
           set_name = string.gsub(msg.to.title, '_', ' '),
-		  lock_arabic = 'ok',
-		  lock_link = "ok",
-          flood = 'del',
-		  lock_spam = 'del',
-		  lock_sticker = 'ok',
-		  member = 'ok',
-		  public = 'ok',
-		  lock_rtl = 'ok',
-		  lock_tgservice = 'del',
-		  lock_contacts = 'ok',
-		  strict = 'ok'
+		  lock_arabic = 'no',
+		  lock_link = "no",
+          flood = 'yes',
+		  lock_spam = 'yes',
+		  lock_sticker = 'no',
+		  member = 'no',
+		  public = 'no',
+		  lock_rtl = 'no',
+		  lock_tgservice = 'yes',
+		  lock_contacts = 'no',
+		  strict = 'no'
         }
       }
       save_data(_config.moderation.data, data)
@@ -184,7 +184,7 @@ local function lock_group_links(msg, data, target)
     return
   end
   local group_link_lock = data[tostring(target)]['settings']['lock_link']
-  if group_link_lock == 'del' then
+  if group_link_lock == 'yes' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -193,7 +193,7 @@ local function lock_group_links(msg, data, target)
     return "Link posting is already locked\nby:@"..msg.from.username..""
 	end
   else
-    data[tostring(target)]['settings']['lock_link'] = 'del'
+    data[tostring(target)]['settings']['lock_link'] = 'yes'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -209,7 +209,7 @@ local function unlock_group_links(msg, data, target)
     return
   end
   local group_link_lock = data[tostring(target)]['settings']['lock_link']
-  if group_link_lock == 'ok' then
+  if group_link_lock == 'no' then
   	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
@@ -218,7 +218,7 @@ local function unlock_group_links(msg, data, target)
     return "Warning"..string.gsub(msg.from.print_name, "_", " ")..":\n Link posting is not locked"
 	end
   else
-    data[tostring(target)]['settings']['lock_link'] = 'ok'
+    data[tostring(target)]['settings']['lock_link'] = 'no'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -238,7 +238,7 @@ local function lock_group_spam(msg, data, target)
     return
   end
   local group_spam_lock = data[tostring(target)]['settings']['lock_spam']
-  if group_spam_lock == 'del' then
+  if group_spam_lock == 'yes' then
   	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
@@ -247,7 +247,7 @@ local function lock_group_spam(msg, data, target)
     return "SuperGroup spam is already locked\nby:@"..msg.from.username..""
 	end
   else
-    data[tostring(target)]['settings']['lock_spam'] = 'del'
+    data[tostring(target)]['settings']['lock_spam'] = 'yes'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -263,7 +263,7 @@ local function unlock_group_spam(msg, data, target)
     return
   end
   local group_spam_lock = data[tostring(target)]['settings']['lock_spam']
-  if group_spam_lock == 'ok' then
+  if group_spam_lock == 'no' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -272,7 +272,7 @@ local function unlock_group_spam(msg, data, target)
   return "Warning"..string.gsub(msg.from.print_name, "_", " ")..":\n spam is not locked"
   end
   else
-    data[tostring(target)]['settings']['lock_spam'] = 'ok'
+    data[tostring(target)]['settings']['lock_spam'] = 'no'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -289,7 +289,7 @@ local function lock_group_fwd(msg, data, target)
     return
   end
   local group_fwd_lock = data[tostring(target)]['settings']['lock_fwd']
-  if group_fwd_lock == 'del' then
+  if group_fwd_lock == 'yes' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -298,7 +298,7 @@ local function lock_group_fwd(msg, data, target)
     return "Forward is already locked"
 	end
   else
-    data[tostring(target)]['settings']['lock_fwd'] = 'del'
+    data[tostring(target)]['settings']['lock_fwd'] = 'yes'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -314,7 +314,7 @@ local function unlock_group_fwd(msg, data, target)
     return
   end
   local group_fwd_lock = data[tostring(target)]['settings']['lock_fwd']
-  if group_fwd_lock == 'ok' then
+  if group_fwd_lock == 'no' then
   	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
@@ -323,7 +323,7 @@ local function unlock_group_fwd(msg, data, target)
     return "Forward is not locked"
 	end
   else
-    data[tostring(target)]['settings']['lock_fwd'] = 'ok'
+    data[tostring(target)]['settings']['lock_fwd'] = 'no'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -340,7 +340,7 @@ local function lock_group_fosh(msg, data, target)
     return
   end
   local group_fosh_lock = data[tostring(target)]['settings']['lock_fosh']
-  if group_fosh_lock == 'del' then
+  if group_fosh_lock == 'yes' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -349,7 +349,7 @@ local function lock_group_fosh(msg, data, target)
     return "Fosh is already locked"
 	end
   else
-    data[tostring(target)]['settings']['lock_fosh'] = 'del'
+    data[tostring(target)]['settings']['lock_fosh'] = 'yes'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -365,7 +365,7 @@ local function unlock_group_fosh(msg, data, target)
     return
   end
   local group_fosh_lock = data[tostring(target)]['settings']['lock_fosh']
-  if group_fosh_lock == 'ok' then
+  if group_fosh_lock == 'no' then
   	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
@@ -374,7 +374,7 @@ local function unlock_group_fosh(msg, data, target)
     return "Fosh is not locked"
 	end
   else
-    data[tostring(target)]['settings']['lock_fosh'] = 'ok'
+    data[tostring(target)]['settings']['lock_fosh'] = 'no'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -391,7 +391,7 @@ local function lock_group_flood(msg, data, target)
     return
   end
   local group_flood_lock = data[tostring(target)]['settings']['flood']
-  if group_flood_lock == 'del' then
+  if group_flood_lock == 'yes' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -400,7 +400,7 @@ local function lock_group_flood(msg, data, target)
     return "Flood is already locked\nby:@"..msg.from.username..""
 	end
   else
-    data[tostring(target)]['settings']['flood'] = 'del'
+    data[tostring(target)]['settings']['flood'] = 'yes'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -416,7 +416,7 @@ local function unlock_group_flood(msg, data, target)
     return
   end
   local group_flood_lock = data[tostring(target)]['settings']['flood']
-  if group_flood_lock == 'ok' then
+  if group_flood_lock == 'no' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -425,7 +425,7 @@ local function unlock_group_flood(msg, data, target)
     return "Warning"..string.gsub(msg.from.print_name, "_", " ")..":\n Flood is not locked"
 	end
   else
-    data[tostring(target)]['settings']['flood'] = 'ok'
+    data[tostring(target)]['settings']['flood'] = 'no'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -441,7 +441,7 @@ local function lock_group_arabic(msg, data, target)
     return
   end
   local group_arabic_lock = data[tostring(target)]['settings']['lock_arabic']
-  if group_arabic_lock == 'del' then
+  if group_arabic_lock == 'yes' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -450,7 +450,7 @@ local function lock_group_arabic(msg, data, target)
     return "Arabic/persian is already locked\nby:@"..msg.from.username..""
 	end
   else
-    data[tostring(target)]['settings']['lock_arabic'] = 'del'
+    data[tostring(target)]['settings']['lock_arabic'] = 'yes'
     save_data(_config.moderation.data, data)
     local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -466,7 +466,7 @@ local function unlock_group_arabic(msg, data, target)
     return
   end
   local group_arabic_lock = data[tostring(target)]['settings']['lock_arabic']
-  if group_arabic_lock == 'ok' then
+  if group_arabic_lock == 'no' then
     local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
@@ -475,7 +475,7 @@ local function unlock_group_arabic(msg, data, target)
     return "Warning"..string.gsub(msg.to.print_name, "_", " ")..":\n Arabic/Persian is not unlocked"
 	end
   else
-    data[tostring(target)]['settings']['lock_arabic'] = 'ok'
+    data[tostring(target)]['settings']['lock_arabic'] = 'no'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -491,7 +491,7 @@ local function lock_group_membermod(msg, data, target)
     return
   end
   local group_member_lock = data[tostring(target)]['settings']['lock_member']
-  if group_member_lock == 'del' then
+  if group_member_lock == 'yes' then
   	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
@@ -500,7 +500,7 @@ local function lock_group_membermod(msg, data, target)
     return "SuperGroup members are already locked\nby:@"..msg.from.username..""
 	end
   else
-    data[tostring(target)]['settings']['lock_member'] = 'del'
+    data[tostring(target)]['settings']['lock_member'] = 'yes'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -516,7 +516,7 @@ local function unlock_group_membermod(msg, data, target)
     return
   end
   local group_member_lock = data[tostring(target)]['settings']['lock_member']
-  if group_member_lock == 'ok' then
+  if group_member_lock == 'no' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -525,7 +525,7 @@ local function unlock_group_membermod(msg, data, target)
     return "Warning"..string.gsub(msg.from.print_name, "_", " ")..":\n supergroup member not lock"
 	end
   else
-    data[tostring(target)]['settings']['lock_member'] = 'ok'
+    data[tostring(target)]['settings']['lock_member'] = 'no'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -541,7 +541,7 @@ local function lock_group_rtl(msg, data, target)
     return
   end
   local group_rtl_lock = data[tostring(target)]['settings']['lock_rtl']
-  if group_rtl_lock == 'del' then
+  if group_rtl_lock == 'yes' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -550,7 +550,7 @@ local function lock_group_rtl(msg, data, target)
     return "RTL is already locked\nby:@"..msg.from.username..""
 	end
   else
-    data[tostring(target)]['settings']['lock_rtl'] = 'del'
+    data[tostring(target)]['settings']['lock_rtl'] = 'yes'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -566,7 +566,7 @@ local function unlock_group_rtl(msg, data, target)
     return
   end
   local group_rtl_lock = data[tostring(target)]['settings']['lock_rtl']
-  if group_rtl_lock == 'ok' then
+  if group_rtl_lock == 'no' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -575,7 +575,7 @@ local function unlock_group_rtl(msg, data, target)
     return "Warning"..string.gsub(msg.from.print_name, "_", " ")..":\n RTL not lock"
 	end
   else
-    data[tostring(target)]['settings']['lock_rtl'] = 'ok'
+    data[tostring(target)]['settings']['lock_rtl'] = 'no'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -591,7 +591,7 @@ local function lock_group_tgservice(msg, data, target)
     return
   end
   local group_tgservice_lock = data[tostring(target)]['settings']['lock_tgservice']
-  if group_tgservice_lock == 'del' then
+  if group_tgservice_lock == 'yes' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -600,7 +600,7 @@ local function lock_group_tgservice(msg, data, target)
     return "Tgservice is already locked\nby:@"..msg.from.username..""
 	end
   else
-    data[tostring(target)]['settings']['lock_tgservice'] = 'del'
+    data[tostring(target)]['settings']['lock_tgservice'] = 'yes'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -616,7 +616,7 @@ local function unlock_group_tgservice(msg, data, target)
     return
   end
   local group_tgservice_lock = data[tostring(target)]['settings']['lock_tgservice']
-  if group_tgservice_lock == 'ok' then
+  if group_tgservice_lock == 'no' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -625,7 +625,7 @@ local function unlock_group_tgservice(msg, data, target)
     return "Warning"..string.gsub(msg.from.print_name, "_", " ")..":\n TgService Is Not Locked!"
 	end
   else
-    data[tostring(target)]['settings']['lock_tgservice'] = 'ok'
+    data[tostring(target)]['settings']['lock_tgservice'] = 'no'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -641,7 +641,7 @@ local function lock_group_sticker(msg, data, target)
     return
   end
   local group_sticker_lock = data[tostring(target)]['settings']['lock_sticker']
-  if group_sticker_lock == 'del' then
+  if group_sticker_lock == 'yes' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -650,7 +650,7 @@ local function lock_group_sticker(msg, data, target)
     return "Sticker posting is already locked\nby:@"..msg.from.username..""
 	end
   else
-    data[tostring(target)]['settings']['lock_sticker'] = 'del'
+    data[tostring(target)]['settings']['lock_sticker'] = 'yes'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -666,7 +666,7 @@ local function unlock_group_sticker(msg, data, target)
     return
   end
   local group_sticker_lock = data[tostring(target)]['settings']['lock_sticker']
-  if group_sticker_lock == 'ok' then
+  if group_sticker_lock == 'no' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -675,7 +675,7 @@ local function unlock_group_sticker(msg, data, target)
     return "Warning"..string.gsub(msg.from.print_name, "_", " ")..":\n Sticker Is Not Locked!"
 	end
   else
-    data[tostring(target)]['settings']['lock_sticker'] = 'ok'
+    data[tostring(target)]['settings']['lock_sticker'] = 'no'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -691,7 +691,7 @@ local function lock_group_contacts(msg, data, target)
     return
   end
   local group_contacts_lock = data[tostring(target)]['settings']['lock_contacts']
-  if group_contacts_lock == 'del' then
+  if group_contacts_lock == 'yes' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -700,7 +700,7 @@ local function lock_group_contacts(msg, data, target)
     return "Contact posting is already locked\nby:@"..msg.from.username..""
 	end
   else
-    data[tostring(target)]['settings']['lock_contacts'] = 'del'
+    data[tostring(target)]['settings']['lock_contacts'] = 'yes'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -716,7 +716,7 @@ local function unlock_group_contacts(msg, data, target)
     return
   end
   local group_contacts_lock = data[tostring(target)]['settings']['lock_contacts']
-  if group_contacts_lock == 'ok' then
+  if group_contacts_lock == 'no' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -725,7 +725,7 @@ local function unlock_group_contacts(msg, data, target)
     return "Warning"..string.gsub(msg.from.print_name, "_", " ")..":\n contacts Is Not Locked!"
 	end
   else
-    data[tostring(target)]['settings']['lock_contacts'] = 'ok'
+    data[tostring(target)]['settings']['lock_contacts'] = 'no'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -741,7 +741,7 @@ local function enable_strict_rules(msg, data, target)
     return
   end
   local group_strict_lock = data[tostring(target)]['settings']['strict']
-  if group_strict_lock == 'del' then
+  if group_strict_lock == 'yes' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -750,7 +750,7 @@ local function enable_strict_rules(msg, data, target)
     return "Settings are already strictly enforced\nby:@"..msg.from.username..""
 	end
   else
-    data[tostring(target)]['settings']['strict'] = 'del'
+    data[tostring(target)]['settings']['strict'] = 'yes'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -766,7 +766,7 @@ local function disable_strict_rules(msg, data, target)
     return
   end
   local group_strict_lock = data[tostring(target)]['settings']['strict']
-  if group_strict_lock == 'ok' then
+  if group_strict_lock == 'no' then
   	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
@@ -775,7 +775,7 @@ local function disable_strict_rules(msg, data, target)
     return "Settings are not strictly enforced\nby:@"..msg.from.username..""
 	end
   else
-    data[tostring(target)]['settings']['strict'] = 'ok'
+    data[tostring(target)]['settings']['strict'] = 'no'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -833,7 +833,7 @@ local function set_public_membermod(msg, data, target)
 	data[tostring(target)]['long_id'] = msg.to.peer_id
 	save_data(_config.moderation.data, data)
   end
-  if group_public_lock == 'del' then
+  if group_public_lock == 'yes' then
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
@@ -842,7 +842,7 @@ local function set_public_membermod(msg, data, target)
   return "Group is already public"
   end
   else
-    data[tostring(target)]['settings']['public'] = 'del'
+    data[tostring(target)]['settings']['public'] = 'yes'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
@@ -863,7 +863,7 @@ local function unset_public_membermod(msg, data, target)
 	data[tostring(target)]['long_id'] = msg.to.peer_id
 	save_data(_config.moderation.data, data)
   end
-  if group_public_lock == 'ok' then
+  if group_public_lock == 'no' then
   	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
@@ -872,7 +872,7 @@ local function unset_public_membermod(msg, data, target)
     return "Group is not public."
 	end
     else
-    data[tostring(target)]['settings']['public'] = 'ok'
+    data[tostring(target)]['settings']['public'] = 'no'
 	data[tostring(target)]['long_id'] = msg.to.long_id
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
@@ -901,27 +901,27 @@ function show_supergroup_settingsmod(msg, target)
     end
 	if data[tostring(target)]['settings'] then
 		if not data[tostring(target)]['settings']['public'] then
-			data[tostring(target)]['settings']['public'] = 'ok'
+			data[tostring(target)]['settings']['public'] = 'no'
 		end
 	end
 	if data[tostring(target)]['settings'] then
 		if not data[tostring(target)]['settings']['lock_rtl'] then
-			data[tostring(target)]['settings']['lock_rtl'] = 'ok'
+			data[tostring(target)]['settings']['lock_rtl'] = 'no'
 		end
 end
 if data[tostring(target)]['settings'] then
 		if not data[tostring(target)]['settings']['lock_fosh'] then
-			data[tostring(target)]['settings']['lock_fosh'] = 'ok'
+			data[tostring(target)]['settings']['lock_fosh'] = 'no'
 		end
 end
 if data[tostring(target)]['settings'] then
 		if not data[tostring(target)]['settings']['lock_fwd'] then
-			data[tostring(target)]['settings']['lock_fwd'] = 'ok'
+			data[tostring(target)]['settings']['lock_fwd'] = 'no'
 		end
 end
       if data[tostring(target)]['settings'] then
 		if not data[tostring(target)]['settings']['lock_tgservice'] then
-			data[tostring(target)]['settings']['lock_tgservice'] = 'ok'
+			data[tostring(target)]['settings']['lock_tgservice'] = 'no'
 		end
 	end
     local groupmodel = "normal"
@@ -934,7 +934,7 @@ end
    	end
 	if data[tostring(target)]['settings'] then
 		if not data[tostring(target)]['settings']['lock_member'] then
-			data[tostring(target)]['settings']['lock_member'] = 'ok'
+			data[tostring(target)]['settings']['lock_member'] = 'no'
 		end
 	end
 	if data[tostring(target)]['settings'] then
@@ -959,10 +959,16 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
  end
  -------
   local settings = data[tostring(target)]['settings']
+  local i = 1
+  local message = ' 👥لیست مدیران گروه :\n'
+  for k,v in pairs(data[tostring(msg.to.id)]['moderators']) do
+  message = message ..i..' -> '..v..' [' ..k.. '] \n'
+  i = i + 1
+  end
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
-  local textfa = "⚙تنظیمات سوپرگروه "..string.gsub(msg.to.print_name, "_", " ").."\n🔰قفل لینک: "..settings.lock_link.."\n🔰قفل استیکر: "..settings.lock_sticker.."\n🔰قفل فحش : "..settings.lock_fosh.."\n🔰قفل فلود: "..settings.flood.."\n🔰قفل فوروارد:"..settings.lock_fwd.."\n🔰قفل اسپم: "..settings.lock_spam.."\n🔰قفل عربی: "..settings.lock_arabic.."\n🔰قفل اعضا: "..settings.lock_member.."\n🔰قفل ار تی ال: "..settings.lock_rtl.."\n🔰قفل سرویس تلگرام: "..settings.lock_tgservice.."\n🔰قفل استیکر: "..settings.lock_sticker.."\n🔰تنظیمات عمومی: "..settings.public.."\n🔰سخت گیرانه: "..settings.strict.."\n〰〰〰〰〰〰〰〰〰〰\n🚨مدل حساسیت: "..NUM_MSG_MAX.."\nمدل گروه : "..groupmodel.."\n💭زبان: 🇮🇷فارسی🇮🇷\n📍ورژن:"..version.."\n"
+  local textfa = ""..message.."⚙تنظیمات سوپرگروه "..string.gsub(msg.to.print_name, "_", " ").."\n🔰قفل لینک: "..settings.lock_link.."\n🔰قفل استیکر: "..settings.lock_sticker.."\n🔰قفل فحش : "..settings.lock_.."\n🔰قفل فلود: "..settings.flood.."\n🔰قفل فوروارد:"..settings.lock_fwd.."\n🔰قفل اسپم: "..settings.lock_spam.."\n🔰قفل عربی: "..settings.lock_arabic.."\n🔰قفل اعضا: "..settings.lock_member.."\n🔰قفل ار تی ال: "..settings.lock_rtl.."\n🔰قفل سرویس تلگرام: "..settings.lock_tgservice.."\n🔰قفل استیکر: "..settings.lock_sticker.."\n🔰تنظیمات عمومی: "..settings.public.."\n🔰سخت گیرانه: "..settings.strict.."\n〰〰〰〰〰〰〰〰〰〰\n🚨مدل حساسیت: "..NUM_MSG_MAX.."\nمدل گروه : "..groupmodel.."\n💭زبان: 🇮🇷فارسی🇮🇷\n📍ورژن:"..version.."\n"
   textfa = string.gsub(textfa, 'no', 'خیر')
   textfa = string.gsub(textfa, 'yes', 'بله')
   textfa = string.gsub(textfa, 'free', 'رایگان')
