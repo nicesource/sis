@@ -770,7 +770,7 @@ local function disable_strict_rules(msg, data, target)
   	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
-	return "تنظیمات اسان شد\nتوسط:@"..msg.from.username..""
+	return "تنظیمات اسان شد"
 	else
     return "Settings are not strictly enforced\nby:@"..msg.from.username..""
 	end
@@ -780,9 +780,9 @@ local function disable_strict_rules(msg, data, target)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
-    return "تنظیمات اسان بود\nتوسط:@"..msg.from.username..""
+    return "تنظیمات اسان بود"
 	else
-    return "Settings will not be strictly enforced\nby:@"..msg.from.username..""
+    return "Settings will not be strictly enforced"
   end
  end
 end
@@ -799,9 +799,9 @@ local function set_rulesmod(msg, data, target)
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
-  return "قوانین تنظیم شد\nتوسط:@"..msg.from.username..""
+  return "قوانین تنظیم شد"
   else
-  return "SuperGroup rules set\nby:@"..msg.from.username..""
+  return "SuperGroup rules set"
  end
 end
 --'Get supergroup rules' function
@@ -1000,7 +1000,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local text = text.."▪️<b> Mod warn </b><code>= "..settings.warn_mod.." </code>\n"
   local text = text.."▫️<b> Group model </b><code>= "..groupmodel.." </code>\n"
   local text = text.."▪️<b> Expire Time </b><code>= "..expire.." </code>\n"
-  local text = text.."▫️<b> lang </b><code>= EN </code>\n"
+  local text = text.."▫️<b> lang </b><code>= 🇬🇧EN🇲🇾 </code>\n"
   local text = text.."▪️<b> version </b><code>= "..version.." </code>\n"
   local text = text..'<a href="https://telegram.me/joinchat/DHi5Sz4zV0qEZhWsSzXXqw">🔗 PowerShield Channel</a>'
   if string.match(text, 'yes') then text = string.gsub(text, 'yes', '❌') end
