@@ -42,10 +42,10 @@ local function check_member_super(cb_extra, success, result)
      local group_lang = redis:hget(hash,'lang')
      save_data(_config.moderation.data, data)
      if group_lang then 
-     local textfa = "سوپرگروه[" ..string.gsub(msg.to.print_name, "_", " ").. "]باموفقت ثبت شد\nتوسط:["..msg.from.id.."]"
+     local textfa = "سوپرگروه[" ..string.gsub(msg.to.print_name, "_", " ").. "]باموفقت ثبت شد"
      return reply_msg(msg.id, textfa, ok_cb, false)
      else
-     local text = "SuperGroup[" ..string.gsub(msg.to.print_name, "_", " ").. "]added\nby["..msg.from.id.."]"
+     local text = "SuperGroup[" ..string.gsub(msg.to.print_name, "_", " ").. "]added"
      return reply_msg(msg.id, text, ok_cb, false)
     end
   end
@@ -72,10 +72,10 @@ local function check_member_superrem(cb_extra, success, result)
 	  local hash = 'group:'..msg.to.id
       local group_lang = redis:hget(hash,'lang')
       if group_lang then
-	  local textfa = "سوپرگروه[" ..string.gsub(msg.to.print_name, "_", " ").. "]ازلیست گروه هاحذف شد\nتوسط:["..msg.from.username.."]"
+	  local textfa = "سوپرگروه[" ..string.gsub(msg.to.print_name, "_", " ").. "]ازلیست گروه هاحذف شد"
       return reply_msg(msg.id, textfa, ok_cb, false)
       else
-	  local text = "SuperGroup[" ..string.gsub(msg.to.print_name, "_", " ").. "]removed\nby["..msg.from.id.."]"
+	  local text = "SuperGroup[" ..string.gsub(msg.to.print_name, "_", " ").. "]removed"
       return reply_msg(msg.id, text, ok_cb, false)
     end
   end
@@ -188,9 +188,9 @@ local function lock_group_links(msg, data, target)
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
-    return "لینک از قبل قفل بود\nتوسط:@"..msg.from.username..""
+    return "لینک از قبل قفل بود"
 	else
-    return "Link posting is already locked\nby:@"..msg.from.username..""
+    return "Link posting is already locked"
 	end
   else
     data[tostring(target)]['settings']['lock_link'] = 'yes'
@@ -198,9 +198,9 @@ local function lock_group_links(msg, data, target)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
-	return "لینک قفل شد\nتوسط:"..msg.from.username..""
+	return "لینک قفل شد"
 	else
-    return "Link posting has been locked\nby:@"..msg.from.username..""
+    return "Link posting has been locked"
   end
  end
 end
@@ -223,9 +223,9 @@ local function unlock_group_links(msg, data, target)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
-	return "قفل لینک ازاد شد\nتوسط:@"..msg.from.username..""
+	return "قفل لینک ازاد شد"
 	else
-    return "Link posting has been unlocked\nby:@"..msg.from.username..""
+    return "Link posting has been unlocked"
   end
  end
 end
@@ -242,9 +242,9 @@ local function lock_group_spam(msg, data, target)
   	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
-	return "قفل اسپم از قبل فعال بود\nتوسط:@"..msg.from.username..""
+	return "قفل اسپم از قبل فعال بود"
 	else
-    return "SuperGroup spam is already locked\nby:@"..msg.from.username..""
+    return "SuperGroup spam is already locked"
 	end
   else
     data[tostring(target)]['settings']['lock_spam'] = 'yes'
@@ -252,9 +252,9 @@ local function lock_group_spam(msg, data, target)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
-	return "قفل اسپم فعال شد\nتوسط:"..msg.from.username..""
+	return "قفل اسپم فعال شد"
 	else
-    return "SuperGroup spam has been locked\nby:@"..msg.from.username..""
+    return "SuperGroup spam has been locked"
   end
  end
 end
@@ -277,9 +277,9 @@ local function unlock_group_spam(msg, data, target)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
-	return "قفل اسپم ازادشد\nتوسط:@"..msg.from.username..""
+	return "قفل اسپم ازادشد"
 	else
-    return "SuperGroup spam has been unlocked\nby:@"..msg.from.username..""
+    return "SuperGroup spam has been unlocked"
   end
  end
 end
