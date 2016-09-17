@@ -395,9 +395,9 @@ local function lock_group_flood(msg, data, target)
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
-    return "قفل فلود از قبل فعال بود\nتوسط:@"..msg.from.username..""
+    return "قفل فلود از قبل فعال بود"
 	else
-    return "Flood is already locked\nby:@"..msg.from.username..""
+    return "Flood is already locked"
 	end
   else
     data[tostring(target)]['settings']['flood'] = 'yes'
@@ -405,9 +405,9 @@ local function lock_group_flood(msg, data, target)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
-	return "قفل فعال شد\nتوسط:@"..msg.from.username..""
+	return "قفل فعال شد"
 	else
-    return "Flood has been locked\nby:@"..msg.from.username..""
+    return "Flood has been locked"
   end
  end
 end
@@ -430,9 +430,9 @@ local function unlock_group_flood(msg, data, target)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
-	return "قفل قلو ازاد شد\nتوسط:@"..msg.from.username..""
+	return "قفل قلو ازاد شد"
 	else
-    return "Flood has been unlocked\nby:@"..msg.from.username..""
+    return "Flood has been unlocked"
   end
  end
 end
@@ -445,9 +445,9 @@ local function lock_group_arabic(msg, data, target)
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
-    return "قفل عربی ازقبل فعال بود\nتوسط:@"..msg.from.username..""
+    return "قفل عربی ازقبل فعال بود"
 	else
-    return "Arabic/persian is already locked\nby:@"..msg.from.username..""
+    return "Arabic/persian is already locked"
 	end
   else
     data[tostring(target)]['settings']['lock_arabic'] = 'yes'
@@ -455,9 +455,9 @@ local function lock_group_arabic(msg, data, target)
     local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
-	return "عربی قفل شد\nتوسط:@"..msg.from.username..""
+	return "عربی قفل شد"
 	else
-    return "Arabic/persian has been locked\nby:@"..msg.from.username..""
+    return "Arabic/persian has been locked"
   end
  end
 end
@@ -595,9 +595,9 @@ local function lock_group_tgservice(msg, data, target)
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
-    return "سرویس تلگرام ازقبل قفل بود\nتوسط:@"..msg.from.username..""
+    return "سرویس تلگرام ازقبل قفل بود"
 	else
-    return "Tgservice is already locked\nby:@"..msg.from.username..""
+    return "Tgservice is already locked"
 	end
   else
     data[tostring(target)]['settings']['lock_tgservice'] = 'yes'
@@ -605,9 +605,9 @@ local function lock_group_tgservice(msg, data, target)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
-	return "سرویس تلگرام قفل شد\nتوسط:@"..msg.from.username..""
+	return "سرویس تلگرام قفل شد"
 	else
-    return "Tgservice has been locked\nby@"..msg.from.username..""
+    return "Tgservice has been locked"
   end
  end
 end
@@ -645,9 +645,9 @@ local function lock_group_sticker(msg, data, target)
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
-    return "قفل استیکرازقبل فعال بود\nتوسط:@"..msg.from.username..""
+    return "قفل استیکرازقبل فعال بود"
 	else
-    return "Sticker posting is already locked\nby:@"..msg.from.username..""
+    return "Sticker posting is already locked"
 	end
   else
     data[tostring(target)]['settings']['lock_sticker'] = 'yes'
@@ -960,15 +960,18 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
  -------
   local settings = data[tostring(target)]['settings']
   local i = 1
-  local message = ' 👥لیست مدیران گروه :\n'
+  local messagefa = ' 👥<code>لیست مدیران گروه :</code>\n'
+  local message = '👥<i>moderators list:</i>\n'
   for k,v in pairs(data[tostring(msg.to.id)]['moderators']) do
-  message = message ..i..' -> '..v..' [' ..k.. '] \n'
+   messagefa = messagefa ..i..' -> <code>'..v..'</code><b> [' ..k.. ']</b> \n'
+   message = message ..i..' -> <code>'..v..'</code><b>[' ..k.. ']</b> \n'
+
   i = i + 1
   end
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
-  local textfa = "⚙تنظیمات سوپرگروه "..string.gsub(msg.to.print_name, "_", " ")..""..message.."\n🔰قفل لینک: "..settings.lock_link.."\n🔰قفل استیکر: "..settings.lock_sticker.."\n🔰قفل فحش : "..settings.lock_fosh.."\n🔰قفل فلود: "..settings.flood.."\n🔰قفل فوروارد:"..settings.lock_fwd.."\n🔰قفل اسپم: "..settings.lock_spam.."\n🔰قفل عربی: "..settings.lock_arabic.."\n🔰قفل اعضا: "..settings.lock_member.."\n🔰قفل ار تی ال: "..settings.lock_rtl.."\n🔰قفل سرویس تلگرام: "..settings.lock_tgservice.."\n🔰قفل استیکر: "..settings.lock_sticker.."\n🔰تنظیمات عمومی: "..settings.public.."\n🔰سخت گیرانه: "..settings.strict.."\n〰〰〰〰〰〰〰〰〰〰\n🚨مدل حساسیت: "..NUM_MSG_MAX.."\nمدل گروه : "..groupmodel.."\n💭زبان: 🇮🇷فارسی🇮🇷\n📍ورژن:"..version.."\n"
+  local textfa = "⚙تنظیمات سوپرگروه "..string.gsub(msg.to.print_name, "_", " ")..""..messagefa.."\n🔰قفل لینک: "..settings.lock_link.."\n🔰قفل استیکر: "..settings.lock_sticker.."\n🔰قفل فحش : "..settings.lock_fosh.."\n🔰قفل فلود: "..settings.flood.."\n🔰قفل فوروارد:"..settings.lock_fwd.."\n🔰قفل اسپم: "..settings.lock_spam.."\n🔰قفل عربی: "..settings.lock_arabic.."\n🔰قفل اعضا: "..settings.lock_member.."\n🔰قفل ار تی ال: "..settings.lock_rtl.."\n🔰قفل سرویس تلگرام: "..settings.lock_tgservice.."\n🔰قفل استیکر: "..settings.lock_sticker.."\n🔰تنظیمات عمومی: "..settings.public.."\n🔰سخت گیرانه: "..settings.strict.."\n〰〰〰〰〰〰〰〰〰〰\n🚨مدل حساسیت: "..NUM_MSG_MAX.."\nمدل گروه : "..groupmodel.."\n💭زبان: 🇮🇷فارسی🇮🇷\n📍ورژن:"..version.."\n"
   textfa = string.gsub(textfa, 'no', 'خیر')
   textfa = string.gsub(textfa, 'yes', 'بله')
   textfa = string.gsub(textfa, 'free', 'رایگان')
@@ -980,6 +983,8 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   return reply_msg(msg.id, textfa, ok_cb, false)
   else
   local text = "💠️<i>Supergroup settings for :</i>\n <code>"..string.gsub(msg.to.print_name, "_", " ").."</code>\n"
+  local text = text..""..message.."\n"
+  local text = text.."▫️<b> Lock Contacts </b><code>= "..settings.lock_contacts.." </code>\n"
   local text = text.."▪️<b> Lock links </b><code>= "..settings.lock_link.." </code>\n"
   local text = text.."▫️<b> Lock flood </b><code>= "..settings.flood.." </code>\n"
   local text = text.."▪️<b> Lock Fosh </b><code>= "..settings.lock_fosh.." </code>\n"
@@ -994,7 +999,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local text = text.."▫️<b> Strict settings </b><code>= "..settings.strict.." </code>\n"
   local text = text.."▪️<b> Flood sensitivity </b><code>= "..NUM_MSG_MAX.." </code>\n"
   local text = text.."<i>〰〰〰〰〰〰〰〰〰〰</i>\n"
-  local text = text.."🔴<b>"..mutes_list(msg.to.id).." </b>\n"
+  local text = text.."🔇🔊<b>"..mutes_list(msg.to.id).." </b>"
   local text = text.."<i>〰〰〰〰〰〰〰〰〰〰</i>\n"
   local text = text.."▫️<b> Max warn </b><code>= "..settings.warn_max.." </code>\n"
   local text = text.."▪️<b> Mod warn </b><code>= "..settings.warn_mod.." </code>\n"
