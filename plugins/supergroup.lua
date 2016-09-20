@@ -1039,7 +1039,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   textfa = string.gsub(textfa, 'normal', 'متوسط')
   return reply_msg(msg.id, textfa, ok_cb, false)
   else
-  local text = "💠️<i>Supergroup settings for :</i>\n <code>"..string.gsub(msg.to.print_name, "_", " ").."</code>\n"
+  local text = "️<i>Supergroup settings for :</i>\n <code>"..string.gsub(msg.to.print_name, "_", " ").."</code>\n"
   local text = text..""..message.."\n"
   local text = text.."▫️<b> Lock Contacts </b><code>= "..settings.lock_contacts.." </code>\n"
   local text = text.."▪️<b> Lock links </b><code>= "..settings.lock_link.." </code>\n"
@@ -1057,15 +1057,15 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local text = text.."▫️<b> Strict settings </b><code>= "..settings.strict.." </code>\n"
   local text = text.."▪️<b> Flood sensitivity </b><code>= "..NUM_MSG_MAX.." </code>\n"
   local text = text.."<i>〰〰〰〰〰〰〰〰〰〰</i>\n"
-  local text = text.."🔇🔊<b>"..mutes_list(msg.to.id).." </b>"
+  local text = text.."<b>"..mutes_list(msg.to.id).." </b>"
   local text = text.."<i>〰〰〰〰〰〰〰〰〰〰</i>\n"
   local text = text.."▫️<b> Max warn </b><code>= "..settings.warn_max.." </code>\n"
   local text = text.."▪️<b> Mod warn </b><code>= "..settings.warn_mod.." </code>\n"
   local text = text.."▫️<b> Group model </b><code>= "..groupmodel.." </code>\n"
   local text = text.."▪️<b> Expire Time </b><code>= "..expire.." </code>\n"
-  local text = text.."▫️<b> lang </b><code>= 🇬🇧EN🇲🇾 </code>\n"
+  local text = text.."▫️<b> lang </b><code>= EN </code>\n"
   local text = text.."▪️<b> version </b><code>= "..version.." </code>\n\n"
-  local text = text..'<a href="https://telegram.me/joinchat/DHi5Sz4zV0qEZhWsSzXXqw">🔗 PowerShield_Team</a>'
+  local text = text..'<a href="https://telegram.me/joinchat/DHi5Sz4zV0qEZhWsSzXXqw">🔗PowerShield_Team </a>'
 	if string.match(text, 'yes') then text = string.gsub(text, 'yes', 'Del') end
 	if string.match(text, 'ok') then text = string.gsub(text, 'ok', 'No') end
 	if string.match(text, 'no') then text = string.gsub(text, 'no', 'No') end
