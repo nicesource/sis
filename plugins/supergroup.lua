@@ -2473,7 +2473,7 @@ end
 			end
 		end
 
-		if matches[1] == 'mute' or matches[1] == 'سکوت' and is_owner(msg) then
+		if matches[1] == 'mute' or matches[1] == 'بیصدا' and is_owner(msg) then
 			local chat_id = msg.to.id
 			if matches[2] == 'audio' or matches[2] == 'صدا' then
 			local msg_type = 'Audio'
@@ -2495,7 +2495,7 @@ end
 					return "SuperGroup mute "..msg_type.." is already on"
 				end
 			end
-			if matches[2] == 'video' or matches[2] == 'ویدیو' then
+			if matches[2] == 'video' or matches[2] == 'فیلم' then
 			local msg_type = 'Video'
 				if not is_muted(chat_id, msg_type..': yes') then
 					savelog(msg.to.id, name_log.." ["..msg.from.id.."] set SuperGroup to: mute "..msg_type)
@@ -2515,7 +2515,7 @@ end
 					return "SuperGroup mute "..msg_type.." is already on"
 				end
 			end
-			if matches[2] == 'documents' or matches[2] == '' then
+			if matches[2] == 'documents' or matches[2] == 'فایل' then
 			local msg_type = 'Documents'
 				if not is_muted(chat_id, msg_type..': yes') then
 					savelog(msg.to.id, name_log.." ["..msg.from.id.."] set SuperGroup to: mute "..msg_type)
@@ -2546,7 +2546,7 @@ end
 				end
 			end
 		end
-		if matches[1] == 'unmute' or matches[1] == 'بازکردن سکوت' and is_momod(msg) then
+		if matches[1] == 'unmute' or matches[1] == 'باصدا' and is_momod(msg) then
 			local chat_id = msg.to.id
 			if matches[2] == 'audio' or matches[2] == 'صدا' then
 			local msg_type = 'Audio'
@@ -2568,7 +2568,7 @@ end
 					return "Mute "..msg_type.." is already off"
 				end
 			end
-			if matches[2] == 'video' or matches[2] == 'ویدیو' then
+			if matches[2] == 'video' or matches[2] == 'فیلم' then
 			local msg_type = 'Video'
 				if is_muted(chat_id, msg_type..': yes') then
 					savelog(msg.to.id, name_log.." ["..msg.from.id.."] set SuperGroup to: unmute "..msg_type)
@@ -2588,7 +2588,7 @@ end
 					return "Mute "..msg_type.." is already off"
 				end
 			end
-			if matches[2] == 'documents' or matches[2] == 'اسناد' then
+			if matches[2] == 'documents' or matches[2] == 'فایل' then
 			local msg_type = 'Documents'
 				if is_muted(chat_id, msg_type..': yes') then
 					savelog(msg.to.id, name_log.." ["..msg.from.id.."] set SuperGroup to: unmute "..msg_type)
@@ -2649,7 +2649,7 @@ end
 			end
 		end
 
-		if matches[1] == "muteslist" or matches[1] == 'تنظیمات سکوت' and is_momod(msg) then
+		if matches[1] == "muteslist" or matches[1] == 'تنظیمات رسانه' and is_momod(msg) then
 			local chat_id = msg.to.id
 			if not has_mutes(chat_id) then
 				set_mutes(chat_id)
@@ -2897,11 +2897,11 @@ return {
 	"^(بازکردن) (.*)$",
 	"^(حساسیت) (.*)$",
 	"^(حالت عمومی) (.*)$",
-	"^(سکوت) ([^%s]+)$",
-	"^(بازکردن سکوت) ([^%s]+)$",
+	"^(بیصدا) ([^%s]+)$",
+	"^(باصدا) ([^%s]+)$",
 	"^(سکوت)$",
 	"^(سکوت) (.*)$",
-	"^(تنظیمات سکوت)$",
+	"^(تنظیمات رسانه)$",
 	"^(لیست افراد سکوت)$",
 	"^(تنظیمات)$",
 	"^(قوانین)$",
