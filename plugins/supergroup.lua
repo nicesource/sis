@@ -1838,8 +1838,7 @@ end
 				  local hash = 'group:'..msg.to.id
                   local group_lang = redis:hget(hash,'lang')
                   if group_lang then
-				local textfa ="<code>ایدی سوپر گروه:</code><b>"..msg.to.id.."</b>\n<code>ایدی کاربری:</code><b>"..msg.from.id.."</b>\n<code>یوزرنیم کاربری:</code><b>@"..msg.from.username"</b>"
-				return reply_msg(msg.id, textfa, ok_cb, false)
+                                local textfa ="ایدی سوپر گروه:"..msg.to.id.."\nایدی کاربری:"..msg.from.id.."\nیوزرنیم کاربری:@"..msg.from.username				return reply_msg(msg.id, textfa, ok_cb, false)
 				else
 				local text = "<b>supergroup ID:</b><i>"..msg.to.id.."</i>\n<b>Your ID:</b><i>"..msg.from.id.."</i>\n<b>Your user:</b><i>@"..msg.from.username.."</i>"
 				return reply_msg(msg.id, text, ok_cb, false)
