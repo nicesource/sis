@@ -217,7 +217,59 @@ local function unlock_group_links(msg, data, target)
 	else
     return "Warning"..string.gsub(msg.from.print_name, "_", " ")..":\n Link posting is not locked"
 	end
+else
+  ------------
+  local function lock_group_bots(msg, data, target)
+  if not is_momod(msg) then
+    return
+  end
+  local group_bots_lock = data[tostring(target)]['settings']['lock_bots']
+  if group_bots_lock == 'yes' then
+  local hash = 'group:'..msg.to.id
+  local group_lang = redis:hget(hash,'lang')
+  if group_lang then
+    return "ربات از قبل قفل بود"
+	else
+    return "Bots is already locked"
+	end
   else
+    data[tostring(target)]['settings']['lock_bots'] = 'yes'
+    save_data(_config.moderation.data, data)
+	local hash = 'group:'..msg.to.id
+    local group_lang = redis:hget(hash,'lang')
+    if group_lang then
+	return "لینک قفل شد"
+	else
+    return "Bots has been locked"
+  end
+ end
+end
+local function unlock_group_bots(msg, data, target)
+  if not is_momod(msg) then
+    return
+  end
+  local group_bots_lock = data[tostring(target)]['settings']['lock_bots']
+  if group_bots_lock == 'no' then
+  	local hash = 'group:'..msg.to.id
+    local group_lang = redis:hget(hash,'lang')
+    if group_lang then
+	return "ادد کردن ربات از قبل آزاد بود"
+	else
+    return "Bots lock is not locked"
+	end
+  else
+    data[tostring(target)]['settings']['lock_bots'] = 'no'
+    save_data(_config.moderation.data, data)
+	local hash = 'group:'..msg.to.id
+    local group_lang = redis:hget(hash,'lang')
+    if group_lang then
+	return "ربات آزاد شد"
+	else
+    return "bots has been unlocked"
+  end
+ end
+end
+------------
     data[tostring(target)]['settings']['lock_link'] = 'no'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
@@ -919,6 +971,11 @@ if data[tostring(target)]['settings'] then
 			data[tostring(target)]['settings']['lock_fwd'] = 'no'
 		end
 end
+if data[tostring(target)]['settings'] then
+		if not data[tostring(target)]['settings']['lock_bots'] then
+			data[tostring(target)]['settings']['lock_bots'] = 'no'
+		end
+end
       if data[tostring(target)]['settings'] then
 		if not data[tostring(target)]['settings']['lock_tgservice'] then
 			data[tostring(target)]['settings']['lock_tgservice'] = 'no'
@@ -988,6 +1045,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local text = text.."▪️<b> Lock links </b><code>= "..settings.lock_link.." </code>\n"
   local text = text.."▫️<b> Lock flood </b><code>= "..settings.flood.." </code>\n"
   local text = text.."▪️<b> Lock Fosh </b><code>= "..settings.lock_fosh.." </code>\n"
+  local text = text.."▪️<b> Lock Bots </b><code>= "..settings.lock_bots.." </code>\n"
   local text = text.."▫️<b> Lock spam </b><code>= "..settings.lock_spam.." </code>\n"
   local text = text.."▪️<b> Lock Arabic </b><code>= "..settings.lock_arabic.." </code>\n"
   local text = text.."▫️<b> Lock RTL </b><code>= "..settings.lock_rtl.." </code>\n"
@@ -2291,6 +2349,10 @@ end
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked flood ")
 				return lock_group_flood(msg, data, target)
 			end
+				if matches[2] == 'bots' or matches[2] == 'ربات' then
+				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked bots ")
+				return lock_group_bots(msg, data, target)
+			end
 			if matches[2] == 'arabic' or matches[2] == 'عربی' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked arabic ")
 				return lock_group_arabic(msg, data, target)
@@ -2342,6 +2404,10 @@ end
 			if matches[2] == 'flood' or matches[2] == 'فلود' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked flood")
 				return unlock_group_flood(msg, data, target)
+			end
+			if matches[2] == 'bots' or matches[2] == 'ربات' then
+				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked bots")
+				return unlock_group_bots(msg, data, target)
 			end
 			if matches[2] == 'fwd' or matches[2] == 'فوروارد' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked fwd")
