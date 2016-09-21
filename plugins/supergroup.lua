@@ -1763,7 +1763,7 @@ end
 			channel_get_kicked(receiver, callback_kicked, {receiver = receiver})
 		end
 
-		if matches[1] == 'del' or matches[1] == 'پاک' and is_momod(msg) then
+		if matches[1] == 'del' or matches[1] == '-' and is_momod(msg) then
 			if type(msg.reply_id) ~= "nil" then
 				local cbreply_extra = {
 					get_cmd = 'del',
@@ -1772,16 +1772,16 @@ end
 				delete_msg(msg.id, ok_cb, false)
 				get_message(msg.reply_id, get_message_callback, cbreply_extra)
 			end
-		end
-
-		if matches[1] == 'block' or matches[1] == 'اخراج' and is_momod(msg) then
+	end
+	
+	if matches[1] == 'block' or matches[1] == 'اخراج' or matches[1] == 'kick' and is_momod(msg) then
 			if type(msg.reply_id) ~= "nil" then
 				local cbreply_extra = {
 					get_cmd = 'channel_block',
 					msg = msg
 				}
 				get_message(msg.reply_id, get_message_callback, cbreply_extra)
-			elseif matches[1] == 'block' or matches[1] == 'اخراج' and matches[2] and string.match(matches[2], '^%d+$') then
+			elseif matches[1] == 'block' or matches[1] == 'اخراج' or matches[1] == 'kick' and matches[2] and string.match(matches[2], '^%d+$') then
 				--[[local user_id = matches[2]
 				local channel_id = msg.to.id
 				if is_momod2(user_id, channel_id) and not is_admin2(user_id) then
@@ -1793,7 +1793,7 @@ end
 				local msg = msg
 				local user_id = matches[2]
 				channel_get_users (receiver, in_channel_cb, {get_cmd=get_cmd, receiver=receiver, msg=msg, user_id=user_id})
-			elseif matches[1] == "block" or matches[1] == "اخراج" and matches[2] and not string.match(matches[2], '^%d+$') then
+			elseif matches[1] == "block" or matches[1] == "اخراج" or matches[1] == "kick" and matches[2] and not string.match(matches[2], '^%d+$') then
 			--[[local cbres_extra = {
 					channelid = msg.to.id,
 					get_cmd = 'channel_block',
@@ -1810,7 +1810,6 @@ end
 			channel_get_users (receiver, in_channel_cb, {get_cmd=get_cmd, receiver=receiver, msg=msg, username=username})
 			end
 		end
-
 		if matches[1] == 'ids' or matches[1] == 'ایدی' then
 			if type(msg.reply_id) ~= "nil" and is_momod(msg) and not matches[2] then
 				local cbreply_extra = {
@@ -1859,7 +1858,7 @@ end
 			local hash = 'group:'..msg.to.id
             local group_lang = redis:hget(hash,'lang')
             if group_lang then
-					send_large_msg(receiver, 'هشدار:\nاین گروه برای ربات نیست شما میتونید از دستور[ست لینک]استفاده کنید\nباتشکرتیم پارت\n@PartTeam')
+					send_large_msg(receiver, 'هشدار:\nاین گروه برای ربات نیست شما میتونید از دستور[تنظیم لینک]استفاده کنید\nباتشکرتیم پارت\n@PartTeam')
 					data[tostring(msg.to.id)]['settings']['set_link'] = nil
 					save_data(_config.moderation.data, data)
 				else
@@ -1883,7 +1882,7 @@ end
 			export_channel_link(receiver, callback_link, false)
 		end
 
-		if matches[1] == 'setlink' or matches[1] == 'ست لینک' and is_owner(msg) then
+		if matches[1] == 'setlink' or matches[1] == 'تنظیم لینک' and is_owner(msg) then
 			data[tostring(msg.to.id)]['settings']['set_link'] = 'waiting'
 			save_data(_config.moderation.data, data)
 			local hash = 'group:'..msg.to.id
@@ -1930,7 +1929,7 @@ end
 			return '<b>Supergroup link:</b>\n<a href="'..group_link..'">'..string.gsub(msg.to.print_name, "_", " ")..'</a>'
 		end
       end
-	   if matches[1] == 'linkpv' or matches[1] == 'لینک پیوی' then
+	   if matches[1] == 'linkpv' or matches[1] == 'لینک خصوصی' then
       if not is_momod(msg) then
         return "فقط برای مدیران"
       end
@@ -1947,7 +1946,7 @@ end
 	 send_large_msg('user#id'..msg.from.id, '<b>Supergroup link:</b>\n<a href="'..group_link..'">'..string.gsub(msg.to.print_name, "_", " ")..'</a>')
     end
 	end
-		if matches[1] == "invite" or matches[1] == 'اینوایت' and is_sudo(msg) then
+		if matches[1] == "invite" or matches[1] == 'دعوت' and is_sudo(msg) then
 			local cbres_extra = {
 				channel = get_receiver(msg),
 				get_cmd = "invite"
@@ -2218,7 +2217,7 @@ end
 			end
 		end
 
-		if matches[1] == 'clean' or matches[1] == 'پاکردن' then
+		if matches[1] == 'clean' or matches[1] == 'حذف' then
 			if not is_momod(msg) then
 				return
 			end
@@ -2301,7 +2300,7 @@ end
 				return "About has been cleaned"
 				end
 			end
-			if matches[2] == 'mutelist' or matches[2] == 'لیست افراد سکوت' then
+			if matches[2] == 'mutelist' or matches[2] == 'افراد سکوت' then
 				chat_id = msg.to.id
 				local hash =  'mute_user:'..chat_id
 					redis:del(hash)
@@ -2658,7 +2657,7 @@ end
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] requested SuperGroup muteslist")
 			return mutes_list(chat_id)
 		end
-		if matches[1] == "mutelist" or matches[1] == 'لیست افراد سکوت' and is_momod(msg) then
+		if matches[1] == "mutelist" or matches[1] == 'افراد سکوت' and is_momod(msg) then
 			local chat_id = msg.to.id
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] requested SuperGroup mutelist")
 			return muted_user_list(chat_id)
@@ -2871,17 +2870,17 @@ return {
 	"^(ادمین ها)$",
 	"^(صاحب)$",
 	"^(لیست افراد حذف شده)$",
-	"^(پاک)$",
+	"^(-)$",
 	"^(راهنما)$",
 	"^(کیک) (.*)$",
 	"^(ایدی) (.*)$",
 	"^(ایدی)$",
 	"^(خروج)$",
 	"^(لینک جدید)$",
-	"^(ست لینک)$",
+	"^(تنظیم لینک)$",
 	"^(لینک)$",
-        "^(لینک پیوی)$",
-	"^(اینوایت) (.*)$",
+        "^(لینک خصوصی)$",
+	"^(دعوت) (.*)$",
   	"^(اطلاعات) (.*)$",
 	"^(ادمین) (.*)$",
 	"^(ادمین)",
@@ -2897,7 +2896,7 @@ return {
 	"^(تنظیم موضوع) (.*)$",
 	"^(تنظیم قوانین) (.*)$",
 	"^(تنظیم عکس)$",
-	"^(پاکردن) (.*)$",
+	"^(حذف) (.*)$",
 	"^(قفل) (.*)$",
 	"^(بازکردن) (.*)$",
 	"^(حساسیت) (.*)$",
@@ -2907,7 +2906,7 @@ return {
 	"^(سکوت)$",
 	"^(سکوت) (.*)$",
 	"^(تنظیمات رسانه)$",
-	"^(لیست افراد سکوت)$",
+	"^(افراد سکوت)$",
 	"^(تنظیمات)$",
 	"^(قوانین)$",
     	"^(تنظیم ورژن) (.*)$",
@@ -2926,8 +2925,8 @@ return {
 	 "^[#!/]([Kk]ick) (.*)",
 	"^[#!/]([Bb]lock)",
 	"^[#!/]([Tt]osuper)$",
-	"^[#!/]([Ii][Dd]s)$",
-	"^[#!/]([Ii][Dd]s) (.*)$",
+	"^[#!/]([Ii][Dd])$",
+	"^[#!/]([Ii][Dd]) (.*)$",
 	"^[#!/]([Kk]ickme)$",
 	"^[#!/]([Kk]ick) (.*)$",
 	"^[#!/]([Nn]ewlink)$",
