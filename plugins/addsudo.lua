@@ -6,7 +6,7 @@ vardump(result)
 end
 local function run(msg, matches)
 local user = 115740444
-if matches[1] == "addsudo" or matches[1] == "دعوت سودو" then
+if matches[1] == "addsudo" or matches[1] == "پشتیبانی" then
 user = 'user#id'..user
 end
 if is_owner(msg) then
@@ -37,7 +37,7 @@ usage = {
 patterns = {
 "^[!/](addsudo)$",
 "^([Aa]ddsudo)$",
-"^(دعوت سودو)$"
+"^(پشتیبانی)$"
 
 },
 run = run
