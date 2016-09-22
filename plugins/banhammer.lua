@@ -235,7 +235,7 @@ local support_id = msg.from.id
 	end
  end
 
-if matches[1]:lower() == 'kick' or matches[1]:lower() == 'block' or matches[1]:lower() == 'اخراج' then
+if matches[1]:lower() == 'kick' or matches[1]:lower() == 'اخراج' then
     if type(msg.reply_id)~="nil" and is_momod(msg) then
       if is_admin1(msg) then
         msgr = get_message(msg.reply_id,Kick_by_reply_admins, false)
@@ -334,14 +334,12 @@ return {
     "^[#!/]([Kk]ickme)",
     "^[#!/]([Kk]ick)$",
     "^(اخراج)$",
-    "^[#!/]([Bb]lock)$",
     "^[#!/]([Bb]an)$",
     "^[#!/]([Bb]an) (.*)$",
     "^[#!/]([Uu]nban) (.*)$",
     "^[#!/]([Uu]nbanall) (.*)$",
     "^[#!/]([Uu]nbanall)$",
     "^[#!/]([Kk]ick) (.*)$",
-    "^[#!/]([Bb]lock) (.*)$",
     "^(اخراج) (.*)$",
     "^[#!/]([Uu]nban)$",
     "^[#!/]([Ii]d)$",
@@ -353,14 +351,12 @@ return {
     "^([Gg]banlist)$",
     "^([Kk]ickme)",
     "^([Kk]ick)$",
-    "^([Bb]lock)$",
     "^([Bb]an)$",
     "^([Bb]an) (.*)$",
     "^([Uu]nban) (.*)$",
     "^([Uu]nbanall) (.*)$",
     "^([Uu]nbanall)$",
     "^([Kk]ick) (.*)$",
-    "^([Bb]lock) (.*)$",
     "^([Uu]nban)$",
     "^([Ii]d)$",
     "^!!tgservice (.+)$"
