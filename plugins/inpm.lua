@@ -1,4 +1,4 @@
-﻿local function pre_process(msg)
+local function pre_process(msg)
 local to = msg.to.type
 local service = msg.service
 	if to == 'user' and msg.fwd_from then
@@ -113,7 +113,7 @@ if to == 'user' or service or is_admin1(msg) and to == "chat" or to == "channel"
 		channel_invite(channel, user, ok_cb, false)
 	elseif matches[2]:lower() == 'persian' and matches[3]:lower() == 'support' then
 		savelog(msg.to.id, name_log.." ["..msg.from.id.."] tried to join Persian support")
-		local target = 1017700355
+		local target = 1044101086
 		local long_id = data[tostring(target)]['long_id']
 		if is_banned(msg.from.id, tostring(target)) then
 			return 'You are banned.'
@@ -206,9 +206,9 @@ if to == 'user' or service or is_admin1(msg) and to == "chat" or to == "channel"
 		send_large_msg("user#id"..user_id, "Added you to chat:\n\n"..group_name.." (ID:"..msg.to.id..")")
 	end
 
-	if matches[1] == 'help' and msg.to.type == 'user' or matches[1] == 'pmhelp' and is_admin1(msg) and msg.to.type ~= 'user' then
+	if matches[1] == 'help' or matches[1] == 'سلام' and msg.to.type == 'user' or matches[1] == 'pmhelp' and is_admin1(msg) and msg.to.type ~= 'user' then
       	savelog(msg.to.id, name_log.." ["..msg.from.id.."] used pm help")
-		text = "Welcome to TeleSeed!\n\nTo get a list of TeleSeed groups use /chats or /chatlist for a document list of chats.\n\nTo get a new TeleSeed group, contact a support group:\n\nFor English support, use: /join English support\n\nFor Persian support, use: /join Persian support\n\nFor more information, check out our channels:\n\n@TeleseedCH [English]\n@Iranseed [Persian]\n\nThanks for using @TeleSeed!"
+		text = '<code>سلام من ربات ضد اسپم پاورشیلد هستم</code>\n<code>من کارای زیادی میکنم که مهمترینش محافظت از گروه شماس</code>\n\n<code>برخی از کارهایی ک من میتونم بکنم:</code>\n\n<i>-| من میتونم گروهتو از گذاشتن لینک، تبلیغات ، چالش،فحش،ادد کردن ربات،اسپم کردن یا خراب کردن گروه محافظت کنم .</i>\n<i>خب اینا فقط بخشی از کارای من بود ک گروهو مدیریت میکنه</i>\n<i>من میتونم شمارو هم سرگرم کنم </i>\n\n<a href="https://telegram.me/joinchat/DHi5Sz4zV0qEZhWsSzXXqw">کانال ما</a>'
      	return text
     end
 
@@ -244,6 +244,7 @@ end
 return {
     patterns = {
 	"^[#!/](help)$",
+	"^(سلام)$",
 	"^[#!/](pmhelp)$",
 	"^[#!/](superhelp)$",
     "^[#!/](chats)$",
