@@ -240,6 +240,7 @@ function create_config( )
     "filter",
     "get",
     "broadcast",
+    "yoodada",
     "invite",
     "all",
     "lock_fwd",
