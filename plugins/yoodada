@@ -1,0 +1,125 @@
+do
+function run(msg, matches)
+if is_owner(msg) then
+local pic = {
+"yod1",
+"yod2",
+"yod3",
+"yod4",
+"yod5",
+"yod6",
+"yod7",
+"yod8",
+"yod9",
+"yod10",
+"yod11",
+"yod12",
+"yod13",
+"yod14",
+"yod15",
+"yod16",
+"yod17",
+"yod18",
+"yod19",
+"yod20",
+"yod21",
+"yod22",
+"yod23",
+"yod24",
+"yod25",
+"yod26",
+"yod27",
+"yod28",
+"yod29",
+"yod30",
+"yod31",
+"yod32",
+"yod33",
+"yod34",
+"yod35",
+"yod36",
+"yod37",
+"yod38",
+"yod39",
+"yod40",
+"yod41",
+"yod42",
+"yod43",
+"yod44",
+"yod45",
+"yod46",
+"yod47",
+"yod48",
+"yod49",
+"yod50",
+"yod51",
+"yod52",
+"yod53",
+"yod54",
+"yod55",
+"yod56",
+"yod57",
+"yod58",
+"yod59",
+"yod60",
+"yod61",
+"yod62",
+"yod63",
+"yod64",
+"yod65",
+"yod66",
+"yod67",
+"yod68",
+"yod69",
+"yod70",
+"yod71",
+"yod72",
+"yod73",
+"yod74",
+"yod75",
+"yod76",
+"yod77",
+"yod78",
+"yod79",
+"yod80",
+"yod81",
+"yod82",
+"yod83",
+"yod84",
+"yod85",
+"yod86",
+"yod87",
+"yod88",
+"yod89",
+"yod90",
+"yod91",
+"yod92",
+"yod93",
+"yod94",
+"yod95",
+"yod96",
+"yod97",
+"yod98",
+"yod99",
+"yod100",
+
+
+}
+local randoms = pic[math.random(#pic)]
+local randomd = randoms..".jpg"
+local cb_extra = {file_path=file}
+local receiver = get_receiver(msg)
+local file = "files/yod/"..randomd
+ send_photo(receiver, file, rmtmp_cb, cb_extra)
+ end
+
+end
+return {
+  patterns = {
+
+  "^yod$"
+  },
+  run = run
+}
+
+end
