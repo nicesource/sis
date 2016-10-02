@@ -1065,7 +1065,6 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local text = text.."▪️<b> Expire Time </b><code>= "..expire.." </code>\n"
   local text = text.."▫️<b> lang </b><code>= EN </code>\n"
   local text = text.."▪️<b> version </b><code>= "..version.." </code>\n\n"
-  local text = text..'<a href="https://telegram.me/joinchat/DHi5Sz4zV0qEZhWsSzXXqw">🔗PowerShield_Team </a>'
 	if string.match(text, 'yes') then text = string.gsub(text, 'yes', 'Del') end
 	if string.match(text, 'ok') then text = string.gsub(text, 'ok', 'No') end
 	if string.match(text, 'no') then text = string.gsub(text, 'no', 'No') end
