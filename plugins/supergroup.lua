@@ -218,8 +218,19 @@ local function unlock_group_links(msg, data, target)
     return " Link posting is not locked"
 	end
 else
-  ------------
-  local function lock_group_bots(msg, data, target)
+    data[tostring(target)]['settings']['lock_link'] = 'no'
+    save_data(_config.moderation.data, data)
+	local hash = 'group:'..msg.to.id
+    local group_lang = redis:hget(hash,'lang')
+    if group_lang then
+	return "قفل لینک ازاد شد"
+	else
+    return "Link posting has been unlocked"
+  end
+ end
+end
+----------
+local function lock_group_bots(msg, data, target)
   if not is_momod(msg) then
     return
   end
@@ -230,7 +241,7 @@ else
   if group_lang then
     return "ربات از قبل قفل بود"
 	else
-    return "Bots is already locked"
+    return " bot adding is already locked"
 	end
   else
     data[tostring(target)]['settings']['lock_bots'] = 'yes'
@@ -238,9 +249,9 @@ else
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
-	return "لینک قفل شد"
+	return "ربات قفل شد"
 	else
-    return "Bots has been locked"
+    return "bot adding has been locked"
   end
  end
 end
@@ -253,34 +264,23 @@ local function unlock_group_bots(msg, data, target)
   	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
-	return "ادد کردن ربات از قبل آزاد بود"
+	return "ربات قفل نشده"
 	else
-    return "Bots lock is not locked"
+    return " bot adding is not locked"
 	end
-  else
+else
     data[tostring(target)]['settings']['lock_bots'] = 'no'
     save_data(_config.moderation.data, data)
 	local hash = 'group:'..msg.to.id
     local group_lang = redis:hget(hash,'lang')
     if group_lang then
-	return "ربات آزاد شد"
+	return "قفل ربات ازاد شد"
 	else
-    return "bots has been unlocked"
+    return "bot adding has been unlocked"
   end
  end
 end
-------------
-    data[tostring(target)]['settings']['lock_link'] = 'no'
-    save_data(_config.moderation.data, data)
-	local hash = 'group:'..msg.to.id
-    local group_lang = redis:hget(hash,'lang')
-    if group_lang then
-	return "قفل لینک ازاد شد"
-	else
-    return "Link posting has been unlocked"
-  end
- end
-end
+---------
 
 local function lock_group_spam(msg, data, target)
   if not is_momod(msg) then
