@@ -1,5 +1,20 @@
 --Begin supergrpup.lua
 --Check members #Add supergroup
+local function check_member_super_deleted(cb_extra, success, result)
+local receiver = cb_extra.receiver
+ local msg = cb_extra.msg
+  local deleted = 0 
+if success == 0 then
+send_large_msg(receiver, "first set me as admin!") 
+end
+for k,v in pairs(result) do
+  if not v.first_name and not v.last_name then
+deleted = deleted + 1
+ kick_user(v.peer_id,msg.to.id)
+ end
+ end
+ send_large_msg(receiver, deleted.." Deleted account removed from group!") 
+ end 
 local function check_member_super(cb_extra, success, result)
   local receiver = cb_extra.receiver
   local data = cb_extra.data
@@ -2242,6 +2257,12 @@ end
 				return "Only owner can clean"
 				end
 			end
+			if matches[2] == 'deleted' then
+			if is_owner(msg) then
+ local receiver = get_receiver(msg) 
+channel_get_users(receiver, check_member_super_deleted,{receiver = receiver, msg = msg})
+ end
+ end
 			if matches[2] == 'modlist' or matches[2] == 'لیست مدیران' then
 				if next(data[tostring(msg.to.id)]['moderators']) == nil then
 			    local hash = 'group:'..msg.to.id
