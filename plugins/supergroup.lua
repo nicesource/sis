@@ -1925,7 +1925,7 @@ end
             if group_lang then
 			return '<code>لینک سوپرگروه:</code>\n'..group_link..''
 			else
-			return '<b>Supergroup link:</b>\n'..group_link..''
+			return '<b>Link supergroup</b>\n'..group_link..''
 		end
       end
 	   if matches[1] == 'linkpv' or matches[1] == 'لینک خصوصی' then
