@@ -1018,7 +1018,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local settings = data[tostring(target)]['settings']
   local i = 1
   local messagefa = ' 👥<code>لیست مدیران گروه :</code>\n'
-  local message = '👥<i>moderators list:</i>\n'
+  local message = '<i>moderators list:</i>\n'
   for k,v in pairs(data[tostring(msg.to.id)]['moderators']) do
    messagefa = messagefa ..i..' -> <code>'..v..'</code><b> [' ..k.. ']</b> \n'
    message = message ..i..' -> <code>'..v..'</code><b>[' ..k.. ']</b> \n'
@@ -1029,6 +1029,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
   local textfa = "⚙تنظیمات سوپرگروه "..string.gsub(msg.to.print_name, "_", " ")..""..messagefa.."\n🔰قفل لینک: "..settings.lock_link.."\n🔰قفل ربات: "..settings.lock_bots.."\n🔰قفل استیکر: "..settings.lock_sticker.."\n🔰قفل فحش : "..settings.lock_fosh.."\n🔰قفل فلود: "..settings.flood.."\n🔰قفل فوروارد:"..settings.lock_fwd.."\n🔰قفل اسپم: "..settings.lock_spam.."\n🔰قفل عربی: "..settings.lock_arabic.."\n🔰قفل اعضا: "..settings.lock_member.."\n🔰قفل ار تی ال: "..settings.lock_rtl.."\n🔰قفل سرویس تلگرام: "..settings.lock_tgservice.."\n🔰قفل استیکر: "..settings.lock_sticker.."\n🔰تنظیمات عمومی: "..settings.public.."\n🔰سخت گیرانه: "..settings.strict.."\n〰〰〰〰〰〰〰〰〰〰\n🚨مدل حساسیت: "..NUM_MSG_MAX.."\nمدل گروه : "..groupmodel.."\n💭زبان: 🇮🇷فارسی🇮🇷\n📍ورژن:"..version.."\n"
+  textfa = string.gsub(textfa, 'normal', 'معمولی')
   textfa = string.gsub(textfa, 'no', 'خیر')
   textfa = string.gsub(textfa, 'yes', 'بله')
   textfa = string.gsub(textfa, 'free', 'رایگان')
@@ -1036,7 +1037,6 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   textfa = string.gsub(textfa, 'realm', 'ریلیم')
   textfa = string.gsub(textfa, 'support', 'ساپورت')
   textfa = string.gsub(textfa, 'feedback', 'پشتیبانی')
-  textfa = string.gsub(textfa, 'normal', 'متوسط')
   return reply_msg(msg.id, textfa, ok_cb, false)
   else
   local text = "️<i>Supergroup settings for :</i>\n <code>"..string.gsub(msg.to.print_name, "_", " ").."</code>\n"
