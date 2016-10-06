@@ -1017,7 +1017,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
  -------
   local settings = data[tostring(target)]['settings']
   local i = 1
-  local messagefa = ' 👥<code>لیست مدیران گروه :</code>\n'
+  local messagefa = ' <code>لیست مدیران گروه :</code>\n'
   local message = '<i>moderators list:</i>\n'
   for k,v in pairs(data[tostring(msg.to.id)]['moderators']) do
    messagefa = messagefa ..i..' -> <code>'..v..'</code><b> [' ..k.. ']</b> \n'
@@ -1028,7 +1028,7 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
-  local textfa = "⚙تنظیمات سوپرگروه "..string.gsub(msg.to.print_name, "_", " ")..""..messagefa.."\n🔰قفل لینک: "..settings.lock_link.."\n🔰قفل ربات: "..settings.lock_bots.."\n🔰قفل استیکر: "..settings.lock_sticker.."\n🔰قفل فحش : "..settings.lock_fosh.."\n🔰قفل فلود: "..settings.flood.."\n🔰قفل فوروارد:"..settings.lock_fwd.."\n🔰قفل اسپم: "..settings.lock_spam.."\n🔰قفل عربی: "..settings.lock_arabic.."\n🔰قفل اعضا: "..settings.lock_member.."\n🔰قفل ار تی ال: "..settings.lock_rtl.."\n🔰قفل سرویس تلگرام: "..settings.lock_tgservice.."\n🔰قفل استیکر: "..settings.lock_sticker.."\n🔰تنظیمات عمومی: "..settings.public.."\n🔰سخت گیرانه: "..settings.strict.."\n〰〰〰〰〰〰〰〰〰〰\n🚨مدل حساسیت: "..NUM_MSG_MAX.."\nمدل گروه : "..groupmodel.."\n💭زبان: 🇮🇷فارسی🇮🇷\n📍ورژن:"..version.."\n"
+  local textfa = "<code>تنظیمات سوپرگروه </code><i> "..string.gsub(msg.to.print_name, "_", " ").."</i>\n"..messagefa.."\n<code>قفل لینک: </code>"..settings.lock_link.."\n<code>قفل ربات: </code><i>"..settings.lock_bots.."</i>\n<code>قفل استیکر:</code> <i>"..settings.lock_sticker.."</i>\n<code>قفل فحش:</code> <i>"..settings.lock_fosh.."</i>\n<code>قفل فلود:</code> <i>"..settings.flood.."</i>\n<code>قفل فوروارد:</code><i>"..settings.lock_fwd.."</i>\n<code>قفل اسپم:</code> <i>"..settings.lock_spam.."</i><code>قفل عربی:</code> <i>"..settings.lock_arabic.."</i>\n<code>قفل اعضا:</code> <i>"..settings.lock_member.."</i>\n<code>قفل ار تی ال:</code> <i>"..settings.lock_rtl.."</i>\n<code>قفل سرویس تلگرام:</code> <i>"..settings.lock_tgservice.."</i>\n<code>قفل استیکر:</code> <i>"..settings.lock_sticker.."</i>\n<code>تنظیمات عمومی:</code> <i>"..settings.public.."</i>\n<code>سخت گیرانه:</code> <i>"..settings.strict.."</i>\n〰〰〰〰〰〰〰〰〰〰\n<code>مدل حساسیت:</code> <b>"..NUM_MSG_MAX.."</b>\n<code>مدل گروه:</code> <i>"..groupmodel.."</i>\n<code>زبان:</code><i> فارســـی </i>\n<code>ورژن:</code> <b>"..version.."</b>\n"
   textfa = string.gsub(textfa, 'normal', 'معمولی')
   textfa = string.gsub(textfa, 'no', 'خیر')
   textfa = string.gsub(textfa, 'yes', 'بله')
