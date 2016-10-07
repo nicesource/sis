@@ -1028,10 +1028,10 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
-  local textfa = "<code>تنظیمات سوپرگروه </code><i> "..string.gsub(msg.to.print_name, "_", " ").."</i>\n"..messagefa.."\n<code>قفل لینک: </code>"..settings.lock_link.."\n<code>قفل ربات: </code><i>"..settings.lock_bots.."</i>\n<code>قفل استیکر:</code> <i>"..settings.lock_sticker.."</i>\n<code>قفل فحش:</code> <i>"..settings.lock_fosh.."</i>\n<code>قفل فلود:</code> <i>"..settings.flood.."</i>\n<code>قفل فوروارد:</code><i>"..settings.lock_fwd.."</i>\n<code>قفل اسپم:</code> <i>"..settings.lock_spam.."</i><code>قفل عربی:</code> <i>"..settings.lock_arabic.."</i>\n<code>قفل اعضا:</code> <i>"..settings.lock_member.."</i>\n<code>قفل ار تی ال:</code> <i>"..settings.lock_rtl.."</i>\n<code>قفل سرویس تلگرام:</code> <i>"..settings.lock_tgservice.."</i>\n<code>قفل استیکر:</code> <i>"..settings.lock_sticker.."</i>\n<code>تنظیمات عمومی:</code> <i>"..settings.public.."</i>\n<code>سخت گیرانه:</code> <i>"..settings.strict.."</i>\n〰〰〰〰〰〰〰〰〰〰\n<code>مدل حساسیت:</code> <b>"..NUM_MSG_MAX.."</b>\n<code>مدل گروه:</code> <i>"..groupmodel.."</i>\n<code>زبان:</code><i> فارســـی </i>\n<code>ورژن:</code> <b>"..version.."</b>\n"
+  local textfa = "<code>تنظیمات سوپرگروه </code><i> "..string.gsub(msg.to.print_name, "_", " ").."</i>\n"..messagefa.."\n<code>قفل لینک:            =    </code><i>"..settings.lock_link.."</i>\n<code>قفل ربات:            =    </code><i>"..settings.lock_bots.."</i>\n<code>قفل استیکر:          =    </code> <i>"..settings.lock_sticker.."</i>\n<code>قفل فحش:           =    </code> <i>"..settings.lock_fosh.."</i>\n<code>قفل فلود:            =    </code> <i>"..settings.flood.."</i>\n<code>قفل فوروارد:           =    </code><i>"..settings.lock_fwd.."</i>\n<code>قفل اسپم:           =    </code> <i>"..settings.lock_spam.."</i>\n<code>قفل عربی:            =    </code> <i>"..settings.lock_arabic.."</i>\n<code>قفل اعضا:            =     </code> <i>"..settings.lock_member.."</i>\n<code>قفل ار تی ال:         =    </code> <i>"..settings.lock_rtl.."</i>\n<code>قفل سرویس تلگرام:    =    </code> <i>"..settings.lock_tgservice.."</i>\n<code>تنظیمات عمومی:       =    </code> <i>"..settings.public.."</i>\n<code>سخت گیرانه:          =    </code> <i>"..settings.strict.."</i>\n〰〰〰〰〰〰〰〰〰〰\n<code>مدل حساسیت:</code> <b>"..NUM_MSG_MAX.."</b>\n<code>مدل گروه:</code> <i>"..groupmodel.."</i>\n<code>زبان:</code><i> فارســـی </i>\n<code>ورژن:</code> <b>"..version.."</b>\n"
   textfa = string.gsub(textfa, 'normal', 'معمولی')
-  textfa = string.gsub(textfa, 'no', 'خیر')
-  textfa = string.gsub(textfa, 'yes', 'بله')
+  textfa = string.gsub(textfa, 'no', 'خاموش')
+  textfa = string.gsub(textfa, 'yes', 'فعال')
   textfa = string.gsub(textfa, 'free', 'رایگان')
   textfa = string.gsub(textfa, 'vip', 'اختصاصی')
   textfa = string.gsub(textfa, 'realm', 'ریلیم')
@@ -2991,8 +2991,8 @@ return {
 	"^([Kk]ick) (.*)",
 	"^([Kk]ick)",
 	"^([Tt]osuper)$",
-	"^([Ii][Dd]s)$",
-	"^([Ii][Dd]s) (.*)$",
+	"^([Ii][Dd])$",
+	"^([Ii][Dd]) (.*)$",
 	"^([Kk]ickme)$",
 	--"^([Ll]ink)$",
 	"^([Rr]es) (.*)$",
