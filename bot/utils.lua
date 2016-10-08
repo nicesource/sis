@@ -1101,7 +1101,7 @@ end
 function muted_user_list(chat_id)
 	local hash =  'mute_user:'..chat_id
 	local list = redis:smembers(hash)
-	local text = "Muted Users for: [ID: "..chat_id.." ]:\n\n"
+	local text = ""
 	for k,v in pairsByKeys(list) do
   		local user_info = redis:hgetall('user:'..v)
 		if user_info and user_info.print_name then
