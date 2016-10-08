@@ -250,6 +250,7 @@ function create_config( )
     "wlc",
 	"supergroup",
 	"whitelist",
+"lock_fosh",
 	"msg_checks"
     },
     sudo_users = {115740444,0,tonumber(our_id)},--Sudo users
@@ -258,16 +259,17 @@ function create_config( )
 👊🏻پاورشیلد ربات 🛡
 
 <code>Source ==>> Not Found </code>
+<b> Sudo And Creator : </b>
+		<code> سودو و سازنده :</code>
+		
+		@PowerShield_sudo
+<i>PowerShield :</i><b> A bot with different settings and options that you (owner,Moderators) can user it and keep their Group is complete security </b>
+		<i>پاورشیلد :</i> <code> رباتی با تنظیمات گوناگون و مختلف که مدیر گروه و صاحب گروه میتواند از آن استفاده کند و گروهش را در امنیت کامل نگه دارد </code>
 
-<code>Sudos</code>
-@powershield_SUDO 
-
-<code>Special thanks to</code>
-behrad
-
-<code>Our channel</code>
+		<b> More information in </b> 
+		<code> اطلاعات بیشتر در </code>
+		
 @powershield_team
-
 ]],
     help_text_realm = [[
 Realm Commands:
