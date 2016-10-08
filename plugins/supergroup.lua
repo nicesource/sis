@@ -1016,6 +1016,14 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
  end
  -------
   local settings = data[tostring(target)]['settings']
+  local mutelist = mutes_list(msg.to.id)
+    mutelist = string.gsub(mutelist, 'Mute Photo', '<code>قفل عکس</code>')
+	mutelist = string.gsub(mutelist, 'Mute Text', '<code>قفل متن</code>')
+    mutelist = string.gsub(mutelist, 'Mute Documents', '<code>قفل فایل</code>')
+    mutelist = string.gsub(mutelist, 'Mute Video', '<code>قفل فیلم</code>')
+    mutelist = string.gsub(mutelist, 'Mute All', '<code>قفل همه</code>')
+    mutelist = string.gsub(mutelist, 'Mute Gifs', '<code>قفل گیف،تصاویر متحرک</code>')
+    mutelist = string.gsub(mutelist, 'Mute Audio', '<code>قفل صدا،وویس</code>')
   local i = 1
   local messagefa = ' <code>لیست مدیران گروه :</code>\n'
   local message = '<i>moderators list:</i>\n'
@@ -1028,10 +1036,10 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local hash = 'group:'..msg.to.id
   local group_lang = redis:hget(hash,'lang')
   if group_lang then
-  local textfa = "<code>تنظیمات سوپرگروه </code><i> "..string.gsub(msg.to.print_name, "_", " ").."</i>\n"..messagefa.."\n<code>قفل لینک:            =    </code><i>"..settings.lock_link.."</i>\n<code>قفل ربات:            =    </code><i>"..settings.lock_bots.."</i>\n<code>قفل استیکر:          =    </code> <i>"..settings.lock_sticker.."</i>\n<code>قفل فحش:           =    </code> <i>"..settings.lock_fosh.."</i>\n<code>قفل فلود:            =    </code> <i>"..settings.flood.."</i>\n<code>قفل فوروارد:           =    </code><i>"..settings.lock_fwd.."</i>\n<code>قفل اسپم:           =    </code> <i>"..settings.lock_spam.."</i>\n<code>قفل عربی:            =    </code> <i>"..settings.lock_arabic.."</i>\n<code>قفل اعضا:            =     </code> <i>"..settings.lock_member.."</i>\n<code>قفل ار تی ال:         =    </code> <i>"..settings.lock_rtl.."</i>\n<code>قفل سرویس تلگرام:    =    </code> <i>"..settings.lock_tgservice.."</i>\n<code>تنظیمات عمومی:       =    </code> <i>"..settings.public.."</i>\n<code>سخت گیرانه:          =    </code> <i>"..settings.strict.."</i>\n〰〰〰〰〰〰〰〰〰〰\n<code>مدل حساسیت:</code> <b>"..NUM_MSG_MAX.."</b>\n<code>مدل گروه:</code> <i>"..groupmodel.."</i>\n<code>زبان:</code><i> فارســـی </i>\n<code>ورژن:</code> <b>"..version.."</b>\n"
+  local textfa = "<code>تنظیمات سوپرگروه </code><i> "..string.gsub(msg.to.print_name, "_", " ").."</i>\n"..messagefa.."\n<code>قفل لینک:            =    </code>"..settings.lock_link.."\n<code>قفل ربات:            =    </code>"..settings.lock_bots.."\n<code>قفل استیکر:          =    </code> "..settings.lock_sticker.."\n<code>قفل فحش:           =    </code> "..settings.lock_fosh.."\n<code>قفل فلود:            =    </code> "..settings.flood.."\n<code>قفل فوروارد:           =    </code>"..settings.lock_fwd.."\n<code>قفل اسپم:           =    </code> "..settings.lock_spam.."\n<code>قفل عربی:            =    </code> "..settings.lock_arabic.."\n<code>قفل اعضا:            =     </code> "..settings.lock_member.."\n<code>قفل ار تی ال:         =    </code> "..settings.lock_rtl.."\n<code>قفل سرویس تلگرام:    =    </code> "..settings.lock_tgservice.."\n<code>تنظیمات عمومی:       =    </code> "..settings.public.."\n<code>سخت گیرانه:          =    </code> "..settings.strict.."\n〰〰〰〰〰〰〰〰〰〰\n"..mutelist.."\n〰〰〰〰〰〰〰〰〰〰\n<code>مدل حساسیت:</code> <b>"..NUM_MSG_MAX.."</b>\n<code>مدل گروه:</code> <i>"..groupmodel.."</i>\n<code>زبان:</code><i> فارســـی </i>\n<code>ورژن:</code> <b>"..version.."</b>\n"
   textfa = string.gsub(textfa, 'normal', 'معمولی')
-  textfa = string.gsub(textfa, 'no', 'خاموش')
-  textfa = string.gsub(textfa, 'yes', 'فعال')
+  textfa = string.gsub(textfa, 'no', '<i>خاموش</i>')
+  textfa = string.gsub(textfa, 'yes', '<i>فعال</i>')
   textfa = string.gsub(textfa, 'free', 'رایگان')
   textfa = string.gsub(textfa, 'vip', 'اختصاصی')
   textfa = string.gsub(textfa, 'realm', 'ریلیم')
@@ -1041,21 +1049,21 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   else
   local text = "️<i>Supergroup settings for :</i>\n <code>"..string.gsub(msg.to.print_name, "_", " ").."</code>\n"
   local text = text..""..message.."\n"
-  local text = text.."▫️<b> Lock Contacts </b><code>= "..settings.lock_contacts.." </code>\n"
-  local text = text.."▪️<b> Lock links </b><code>= "..settings.lock_link.." </code>\n"
-  local text = text.."▫️<b> Lock flood </b><code>= "..settings.flood.." </code>\n"
-  local text = text.."▪️<b> Lock Fosh </b><code>= "..settings.lock_fosh.." </code>\n"
-  local text = text.."▪️<b> Lock Bots </b><code>= "..settings.lock_bots.." </code>\n"
-  local text = text.."▫️<b> Lock spam </b><code>= "..settings.lock_spam.." </code>\n"
-  local text = text.."▪️<b> Lock Arabic </b><code>= "..settings.lock_arabic.." </code>\n"
-  local text = text.."▫️<b> Lock RTL </b><code>= "..settings.lock_rtl.." </code>\n"
-  local text = text.."▪️<b> Lock Tgservice </b><code>= "..settings.lock_tgservice.." </code>\n"
-  local text = text.."▫️<b> Lock Forward(fwd) </b><code>= "..settings.lock_fwd.." </code>\n"
-  local text = text.."▪️<b> Lock Member </b><code>= "..settings.lock_member.." </code>\n"
-  local text = text.."▫️<b> Lock sticker </b><code>= "..settings.lock_sticker.." </code>\n"
-  local text = text.."▪️<b> Public </b><code>= "..settings.public.." </code>\n"
-  local text = text.."▫️<b> Strict settings </b><code>= "..settings.strict.." </code>\n"
-  local text = text.."▪️<b> Flood sensitivity </b><code>= "..NUM_MSG_MAX.." </code>\n"
+  local text = text.."▫️<b> Lock Contacts </b>= "..settings.lock_contacts.." \n"
+  local text = text.."▪️<b> Lock links </b>= "..settings.lock_link.." \n"
+  local text = text.."▫️<b> Lock flood </b>= "..settings.flood.." \n"
+  local text = text.."▪️<b> Lock Fosh </b>= "..settings.lock_fosh.."\n"
+  local text = text.."▪️<b> Lock Bots </b>= "..settings.lock_bots.." \n"
+  local text = text.."▫️<b> Lock spam </b>= "..settings.lock_spam.." \n"
+  local text = text.."▪️<b> Lock Arabic </b>= "..settings.lock_arabic.." \n"
+  local text = text.."▫️<b> Lock RTL </b>= "..settings.lock_rtl.." \n"
+  local text = text.."▪️<b> Lock Tgservice </b>= "..settings.lock_tgservice.."\n"
+  local text = text.."▫️<b> Lock Forward(fwd) </b>= "..settings.lock_fwd.." \n"
+  local text = text.."▪️<b> Lock Member </b>= "..settings.lock_member.."\n"
+  local text = text.."▫️<b> Lock sticker </b>= "..settings.lock_sticker.." \n"
+  local text = text.."▪️<b> Public </b>= "..settings.public.." \n"
+  local text = text.."▫️<b> Strict settings </b>= "..settings.strict.." \n"
+  local text = text.."▪️<b> Flood sensitivity </b>= "..NUM_MSG_MAX.." \n"
   local text = text.."<i>〰〰〰〰〰〰〰〰〰〰</i>\n"
   local text = text.."<b>"..mutes_list(msg.to.id).." </b>"
   local text = text.."<i>〰〰〰〰〰〰〰〰〰〰</i>\n"
@@ -1065,9 +1073,9 @@ local expiretime = redis:hget('expiretime', get_receiver(msg))
   local text = text.."▪️<b> Expire Time </b><code>= "..expire.." </code>\n"
   local text = text.."▫️<b> lang </b><code>= EN </code>\n"
   local text = text.."▪️<b> version </b><code>= "..version.." </code>\n\n"
-	if string.match(text, 'yes') then text = string.gsub(text, 'yes', 'Del') end
-	if string.match(text, 'ok') then text = string.gsub(text, 'ok', 'No') end
-	if string.match(text, 'no') then text = string.gsub(text, 'no', 'No') end
+	if string.match(text, 'yes') then text = string.gsub(text, 'yes', '<code>Del</code>') end
+	if string.match(text, 'ok') then text = string.gsub(text, 'ok', '<code>No</code>') end
+	if string.match(text, 'no') then text = string.gsub(text, 'no', '<code>No</code>') end
   return reply_msg(msg.id, text, ok_cb, false)
  end
 end
