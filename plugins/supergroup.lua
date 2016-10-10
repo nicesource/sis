@@ -2078,42 +2078,27 @@ end
 			end
 		end
 
-		if matches[1] == 'promote' or matches[1] == 'ترفیع' then
-		  if not is_momod(msg) then
-				return
+		if matches[1]:lower() == 'promote' or matches[1] == 'ترفیع' then
+ if (not is_momod(msg)) or (not is_owner(msg)) then
+  local group_lang = redis:hget('group:'..msg.to.id,'lang')
+  if group_lang then
+   return "فقط برای صاحب گروه امکان پذیر است"
+  else
+   return "Only owner/admin can promote"
+  end
+ end
+ if msg.reply_id then
+  promote = get_message(msg.reply_id, get_message_callback, {get_cmd='promote', msg=msg})
+ elseif matches[2] then
+  if string.match(matches[2], '^%d+$') then
+   savelog(msg.to.id, name_log.." ["..msg.from.id.."] promoted user#id"..matches[2])
+   user_info("user#id"..matches[2], cb_user_info, {receiver=get_receiver(msg), get_cmd='promote'})
+  else
+   savelog(msg.to.id, name_log.." ["..msg.from.id.."] promoted @"..string.gsub(matches[2], '@', ''))
+   return resolve_username(string.gsub(matches[2], '@', ''), callbackres, {channel = get_receiver(msg), get_cmd='promote'})
+  end
+    end
 			end
-			if not is_owner(msg) then
-		    local hash = 'group:'..msg.to.id
-            local group_lang = redis:hget(hash,'lang')
-            if group_lang then
-			    return "فقط برای صاحب گروه امکان پذیر است"
-				else
-				return "Only owner/admin can promote"
-				end
-			end
-			if type(msg.reply_id) ~= "nil" then
-				local cbreply_extra = {
-					get_cmd = 'promote',
-					msg = msg
-				}
-				promote = get_message(msg.reply_id, get_message_callback, cbreply_extra)
-			elseif matches[1] == 'promote' or matches[1] == 'ترفیع' and matches[2] and string.match(matches[2], '^%d+$') then
-				local receiver = get_receiver(msg)
-				local user_id = "user#id"..matches[2]
-				local get_cmd = 'promote'
-				savelog(msg.to.id, name_log.." ["..msg.from.id.."] promoted user#id"..matches[2])
-				user_info(user_id, cb_user_info, {receiver = receiver, get_cmd = get_cmd})
-			elseif matches[1] == 'promote' or matches[1] == 'ترفیع' and matches[2] and not string.match(matches[2], '^%d+$') then
-				local cbres_extra = {
-					channel = get_receiver(msg),
-					get_cmd = 'promote',
-				}
-				local username = matches[2]
-				local username = string.gsub(matches[2], '@', '')
-				savelog(msg.to.id, name_log.." ["..msg.from.id.."] promoted @"..username)
-				return resolve_username(username, callbackres, cbres_extra)
-			end
-		end
 
 		if matches[1] == 'mp' and is_sudo(msg) then
 			channel = get_receiver(msg)
